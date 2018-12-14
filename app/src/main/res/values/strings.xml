@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Top Pops</string>
+    <string name="song_name_detail">Song name: </string>
+    <string name="album_name_detail">Album name: </string>
+    <string name="artist_name_detail">Artist name: </string>
+    <string name="detail_track_list">Album track list: </string>
+</resources>
