@@ -1,6 +1,7 @@
 package com.example.android.retrofittoppops.database.dao;
 
 import com.example.android.retrofittoppops.database.entity.Track;
+import com.example.android.retrofittoppops.model.TrackArtistHelper;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface TrackDao {
     @Query("DELETE FROM tracks_table")
     void deleteAll();
 
+    @Query("SELECT * FROM artist_table INNER JOIN tracks_table ON tracks_table.artistId = artist_table.id")
+    LiveData<List<TrackArtistHelper>> getAllTracksAndArtists();
 }
