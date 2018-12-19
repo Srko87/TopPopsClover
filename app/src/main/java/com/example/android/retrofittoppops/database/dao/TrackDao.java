@@ -14,14 +14,14 @@ import androidx.room.Transaction;
 @Dao
 public interface TrackDao {
 
-    @Query("DELETE FROM tracks_table")
-    void deleteAll();
-
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Track... tracks);
 
     @Query("SELECT * FROM tracks_table")
     LiveData<List<Track>> getAllTracks();
+
+    @Query("DELETE FROM tracks_table")
+    void deleteAll();
 
 }

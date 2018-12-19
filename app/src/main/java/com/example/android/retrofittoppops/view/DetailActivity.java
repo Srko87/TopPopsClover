@@ -109,6 +109,7 @@ public class DetailActivity extends AppCompatActivity {
         artistName.setText(getString(R.string.artist_name_detail) + albumAlbum.getAlbumArtist().getName());
         Picasso.get().load(albumAlbum.getCoverBig()).into(albumCover);
     }
+
     private void initializeToolbar (Toolbar detailToolbar) {
         setSupportActionBar(detailToolbar);
         if(getSupportActionBar() != null) {
@@ -118,6 +119,7 @@ public class DetailActivity extends AppCompatActivity {
             Toast.makeText(this, "getSupportActionbar is null", Toast.LENGTH_SHORT).show();
         }
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

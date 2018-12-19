@@ -14,9 +14,6 @@ import androidx.room.Transaction;
 @Dao
 public interface ArtistDao {
 
-    @Query("DELETE FROM artist_table")
-    void deleteAll();
-
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Artist... artists);
@@ -24,4 +21,6 @@ public interface ArtistDao {
     @Query("SELECT * FROM artist_table")
     LiveData<List<Artist>> getAllArtists();
 
+    @Query("DELETE FROM artist_table")
+    void deleteAll();
 }

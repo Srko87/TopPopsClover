@@ -14,13 +14,14 @@ import androidx.room.Transaction;
 @Dao
 public interface AlbumDao {
 
-    @Query("DELETE FROM album_table")
-    void deleteAll();
-
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Album... albums);
 
     @Query("SELECT * FROM album_table")
     LiveData<List<Album>> getAllAlbums();
+
+    @Query("DELETE FROM album_table")
+    void deleteAll();
+
 }
