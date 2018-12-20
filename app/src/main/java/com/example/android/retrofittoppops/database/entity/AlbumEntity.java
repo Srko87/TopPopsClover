@@ -8,23 +8,23 @@ import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "album_table", foreignKeys =  @ForeignKey(entity = Artist.class, parentColumns = "id",
+@Entity(tableName = "album_table", foreignKeys =  @ForeignKey(entity = ArtistEntity.class, parentColumns = "id",
         childColumns = "artistId", onDelete = CASCADE), indices = {@Index("artistId")})
-public class Album {
+public class AlbumEntity {
 
     @NonNull
     @PrimaryKey
-    private String id;
+    private Integer id;
 
     private String name;
-    private String artistId;
+    private Integer artistId;
 
     @NonNull
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(@NonNull String id) {
+    public void setId(@NonNull Integer id) {
         this.id = id;
     }
 
@@ -36,11 +36,11 @@ public class Album {
         this.name = name;
     }
 
-    public String getArtistId() {
+    public Integer getArtistId() {
         return artistId;
     }
 
-    public void setArtistId(String artistId) {
+    public void setArtistId(Integer artistId) {
         this.artistId = artistId;
     }
 }

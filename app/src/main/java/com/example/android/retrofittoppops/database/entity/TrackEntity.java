@@ -1,34 +1,38 @@
 package com.example.android.retrofittoppops.database.entity;
 
-import androidx.room.ColumnInfo;
+
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "track_artist_table")
-public class TrackArtist {
+import static androidx.room.ForeignKey.CASCADE;
 
+@Entity(tableName = "tracks_table",
+        foreignKeys = { @ForeignKey(entity = ArtistEntity.class, parentColumns = "id", childColumns = "artistId", onDelete = CASCADE, onUpdate = CASCADE),
+                @ForeignKey(entity = AlbumEntity.class, parentColumns = "id", childColumns = "albumId", onDelete = CASCADE, onUpdate = CASCADE)},
+        indices = {@Index("artistId"), @Index("albumId")})
+
+public class TrackEntity {
+
+    @NonNull
     @PrimaryKey
     private String id;
 
     private String title;
-
     private Integer duration;
-
     private Integer position;
+    private Integer artistId;
+    private Integer albumId;
 
-
-    private String artistId;
-
-    @ColumnInfo(name = "name")
-    private String artistName;
-
-    private String albumId;
-
+    @NonNull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
@@ -56,27 +60,19 @@ public class TrackArtist {
         this.position = position;
     }
 
-    public String getArtistId() {
+    public Integer getArtistId() {
         return artistId;
     }
 
-    public void setArtistId(String artistId) {
+    public void setArtistId(Integer artistId) {
         this.artistId = artistId;
     }
 
-    public String getArtistName() {
-        return artistName;
-    }
-
-    public void setArtistName(String artistName) {
-        this.artistName = artistName;
-    }
-
-    public String getAlbumId() {
+    public Integer getAlbumId() {
         return albumId;
     }
 
-    public void setAlbumId(String albumId) {
+    public void setAlbumId(Integer albumId) {
         this.albumId = albumId;
     }
 }

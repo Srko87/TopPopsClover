@@ -12,11 +12,11 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 @Entity (tableName = "chart_table")
-public class Chart {
+public class ChartEntity {
 
     @NonNull
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private Integer id;
 
     @TypeConverters(DateConverter.class)
     private Date createdAt;
@@ -26,11 +26,11 @@ public class Chart {
     private List<String> tracks;
 
     @NonNull
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(@NonNull int id) {
+    public void setId(@NonNull Integer id) {
         this.id = id;
     }
 

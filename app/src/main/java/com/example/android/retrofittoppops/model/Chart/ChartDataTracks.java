@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class ChartDataTracks implements Serializable {
 
     @SerializedName("id")
-    private int id;
+    private String id;
     @SerializedName("title")
     private String title;
     @SerializedName("title_short")
@@ -33,7 +33,7 @@ public class ChartDataTracks implements Serializable {
     @SerializedName("type")
     private String type;
 
-    ChartDataTracks(int id, String title, String titleShort, String titleVersion, String link, int duration, int rank, boolean explicitLyrics, String preview, int position, ChartArtistTracks chartArtistTracks, ChartAlbumTracks chartAlbumTracks, String type) {
+    ChartDataTracks(String id, String title, String titleShort, String titleVersion, String link, int duration, int rank, boolean explicitLyrics, String preview, int position, ChartArtistTracks chartArtistTracks, ChartAlbumTracks chartAlbumTracks, String type) {
         this.id = id;
         this.title = title;
         this.titleShort = titleShort;
@@ -49,11 +49,11 @@ public class ChartDataTracks implements Serializable {
         this.type = type;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

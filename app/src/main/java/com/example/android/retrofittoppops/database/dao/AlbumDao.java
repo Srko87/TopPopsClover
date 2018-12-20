@@ -1,6 +1,6 @@
 package com.example.android.retrofittoppops.database.dao;
 
-import com.example.android.retrofittoppops.database.entity.Album;
+import com.example.android.retrofittoppops.database.entity.AlbumEntity;
 
 import java.util.List;
 
@@ -16,10 +16,10 @@ public interface AlbumDao {
 
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Album... albums);
+    void insert(AlbumEntity... albumEntities);
 
     @Query("SELECT * FROM album_table")
-    LiveData<List<Album>> getAllAlbums();
+    LiveData<List<AlbumEntity>> getAllAlbums();
 
     @Query("DELETE FROM album_table")
     void deleteAll();

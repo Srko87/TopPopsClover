@@ -1,6 +1,6 @@
 package com.example.android.retrofittoppops.database.dao;
 
-import com.example.android.retrofittoppops.database.entity.Chart;
+import com.example.android.retrofittoppops.database.entity.ChartEntity;
 
 import java.util.Date;
 
@@ -12,10 +12,10 @@ import androidx.room.Query;
 public interface ChartDao {
 
     @Insert
-    void insert(Chart chart);
+    void insert(ChartEntity chartEntity);
 
     @Query("SELECT * FROM chart_table ORDER BY id DESC LIMIT 1")
-    Chart getLastChart();
+    ChartEntity getLastChart();
 
     @Query("DELETE FROM chart_table")
     void deleteAll();
