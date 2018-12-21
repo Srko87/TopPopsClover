@@ -4,4 +4,5 @@
     <string name="album_name_detail">Album name: </string>
     <string name="artist_name_detail">Artist name: </string>
     <string name="detail_track_list">Album track list: </string>
+    <string name="no_data">No data available \n Swipe down to load data</string>
 </resources>

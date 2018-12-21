@@ -6,20 +6,20 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "artist_table")
-public class Artist {
+public class ArtistEntity {
 
     @NonNull
     @PrimaryKey
-    private String id;
+    private Integer id;
 
     private String name;
 
     @NonNull
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(@NonNull String id) {
+    public void setId(@NonNull Integer id) {
         this.id = id;
     }
 

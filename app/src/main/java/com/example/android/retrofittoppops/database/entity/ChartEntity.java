@@ -12,25 +12,24 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 @Entity (tableName = "chart_table")
-public class Chart {
+public class ChartEntity {
 
     @NonNull
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private Integer id;
 
     @TypeConverters(DateConverter.class)
     private Date createdAt;
     @TypeConverters(DateConverter.class)
     private Date modifiedAt;
-    @TypeConverters(TrackConverter.class)
-    private List<String> tracks;
+
 
     @NonNull
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(@NonNull int id) {
+    public void setId(@NonNull Integer id) {
         this.id = id;
     }
 
@@ -50,11 +49,5 @@ public class Chart {
         this.modifiedAt = modifiedAt;
     }
 
-    public List<String> getTracks() {
-        return tracks;
-    }
 
-    public void setTracks(List<String> tracks) {
-        this.tracks = tracks;
-    }
 }

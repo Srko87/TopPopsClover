@@ -4,18 +4,18 @@ package com.example.android.retrofittoppops.database.entity;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "tracks_table",
-        foreignKeys = {
-        @ForeignKey(entity = Artist.class, parentColumns = "id", childColumns = "artistId", onDelete = CASCADE, onUpdate = CASCADE),
-        @ForeignKey(entity = Album.class, parentColumns = "id", childColumns = "albumId", onDelete = CASCADE, onUpdate = CASCADE)
-        }, indices = {@Index("artistId"), @Index("albumId")})
+        foreignKeys = { @ForeignKey(entity = ArtistEntity.class, parentColumns = "id", childColumns = "artistId", onDelete = CASCADE, onUpdate = CASCADE),
+                @ForeignKey(entity = AlbumEntity.class, parentColumns = "id", childColumns = "albumId", onDelete = CASCADE, onUpdate = CASCADE)},
+        indices = {@Index("artistId"), @Index("albumId")})
 
-public class Track {
+public class TrackEntity {
 
     @NonNull
     @PrimaryKey
@@ -24,9 +24,8 @@ public class Track {
     private String title;
     private Integer duration;
     private Integer position;
-
-    private String artistId;
-    private String albumId;
+    private Integer artistId;
+    private Integer albumId;
 
     @NonNull
     public String getId() {
@@ -61,19 +60,19 @@ public class Track {
         this.position = position;
     }
 
-    public String getArtistId() {
+    public Integer getArtistId() {
         return artistId;
     }
 
-    public void setArtistId(String artistId) {
+    public void setArtistId(Integer artistId) {
         this.artistId = artistId;
     }
 
-    public String getAlbumId() {
+    public Integer getAlbumId() {
         return albumId;
     }
 
-    public void setAlbumId(String albumId) {
+    public void setAlbumId(Integer albumId) {
         this.albumId = albumId;
     }
 }
