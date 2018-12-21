@@ -74,7 +74,7 @@ public class TrackRepository {
                 AlbumEntity albumEntity = new AlbumEntity();
                 albumEntity.setId(cDTracks.getChartAlbumTracks().getId());
                 albumEntity.setName(cDTracks.getChartAlbumTracks().getTitle());
-                albumEntity.setArtistId(cDTracks.getChartAlbumTracks().getId());
+                albumEntity.setArtistId(cDTracks.getChartArtistTracks().getId());
                 albumEntities.add(albumEntity);
 
                 TrackEntity trackEntity = new TrackEntity();

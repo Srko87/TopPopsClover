@@ -57,6 +57,7 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyviewHolder
         @BindView(R.id.song_position_tv) TextView songPosition;
         @BindView(R.id.song_name_tv) TextView songName;
         @BindView(R.id.song_length_tv) TextView songDuration;
+        @BindView(R.id.artist_name_tv) TextView artistName;
 
         public MyviewHolder(View itemView) {
             super(itemView);
@@ -64,10 +65,12 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyviewHolder
         }
 
         public void bindView(final int position){
-            final TrackEntity item = data.get(position);
+
+            TrackEntity item = data.get(position);
 
             songPosition.setText(String.valueOf("Song position: " + item.getPosition()));
             songName.setText("Song name: " + item.getTitle());
+            artistName.setText("Artist name: " + item.getArtistId());
             songDuration.setText(String.valueOf("Song Duration: " + Tools.secondsToString(item.getDuration())));
 
             itemView.setOnClickListener(new View.OnClickListener() {

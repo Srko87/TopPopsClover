@@ -22,8 +22,7 @@ public class ChartEntity {
     private Date createdAt;
     @TypeConverters(DateConverter.class)
     private Date modifiedAt;
-    @TypeConverters(TrackConverter.class)
-    private List<String> tracks;
+
 
     @NonNull
     public Integer getId() {
@@ -50,11 +49,5 @@ public class ChartEntity {
         this.modifiedAt = modifiedAt;
     }
 
-    public List<String> getTracks() {
-        return tracks;
-    }
 
-    public void setTracks(List<String> tracks) {
-        this.tracks = tracks;
-    }
 }

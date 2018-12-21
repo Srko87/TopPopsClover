@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +28,6 @@ import com.example.android.retrofittoppops.rest.ApiClient;
 import com.example.android.retrofittoppops.rest.ApiInterface;
 import com.example.android.retrofittoppops.viewmodel.TracksViewModel;
 
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -111,33 +111,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public static class ChartParams {
-        private Date date;
-        private List<ChartDataTracks> trackList;
-        private int id;
 
-        ChartParams(Date date ,List<ChartDataTracks> trackList, int id) {
-            this.date = date;
-            this.trackList = trackList;
-            this.id = id;
-        }
-        ChartParams(Date date ,List<ChartDataTracks> trackList) {
-            this.date = date;
-            this.trackList = trackList;
-        }
-
-        public Date getDate() {
-            return date;
-        }
-
-        public List<ChartDataTracks> getTrackList() {
-            return trackList;
-        }
-
-        public int getId() {
-            return id;
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -145,34 +119,36 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.sort_normal: {
+
+    //TODO Menu items
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sort_normal: {
 //                ArrayList<ChartDataTracks> ascendingTracks = new ArrayList<>(adapterMainRv.getData());
 //                Collections.sort(ascendingTracks, (t1, t2) -> t1.getPosition() - t2.getPosition());
 //
 //                adapterMainRv.setDataTracksList(ascendingTracks);
-//                Toast.makeText(getApplicationContext(), "Sorted as retrieved from API!", Toast.LENGTH_SHORT).show();
-//                break;
-//            }
-//            case R.id.sort_ascending: {
+                Toast.makeText(getApplicationContext(), "Sorted as retrieved from API!", Toast.LENGTH_SHORT).show();
+                break;
+            }
+            case R.id.sort_ascending: {
 //                ArrayList<ChartDataTracks> ascendingTracks = new ArrayList<>(adapterMainRv.getData());
 //                Collections.sort(ascendingTracks, (t1, t2) -> t1.getDuration() - t2.getDuration());
 //
 //                adapterMainRv.setDataTracksList(ascendingTracks);
-//                Toast.makeText(getApplicationContext(), "Sorted ascending by track duration!", Toast.LENGTH_SHORT).show();
-//                break;
-//            }
-//            case R.id.sort_descending: {
+                Toast.makeText(getApplicationContext(), "Sorted ascending by track duration!", Toast.LENGTH_SHORT).show();
+                break;
+            }
+            case R.id.sort_descending: {
 //                ArrayList<ChartDataTracks> descendingTracks = new ArrayList<>(adapterMainRv.getData());
 //                Collections.sort(descendingTracks, (t1, t2) -> t2.getDuration() - t1.getDuration());
 //
 //                adapterMainRv.setDataTracksList(descendingTracks);
-//                Toast.makeText(getApplicationContext(), "Sorted descending by track duration!", Toast.LENGTH_SHORT).show();
-//                break;
-//            }
-//        }
-//      return true;
-//    }
+                Toast.makeText(getApplicationContext(), "Sorted descending by track duration!", Toast.LENGTH_SHORT).show();
+                break;
+            }
+        }
+      return super.onOptionsItemSelected(item);
+    }
 }

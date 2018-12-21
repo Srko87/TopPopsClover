@@ -6,6 +6,7 @@ import com.example.android.retrofittoppops.database.entity.TrackEntity;
 import com.example.android.retrofittoppops.database.repository.TrackRepository;
 import com.example.android.retrofittoppops.model.Chart.ChartDataTracks;
 
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -31,4 +32,6 @@ public class TracksViewModel extends AndroidViewModel {
     public void deleteAll() {
         trackRepository.deleteAll();
     }
+
+
 }
