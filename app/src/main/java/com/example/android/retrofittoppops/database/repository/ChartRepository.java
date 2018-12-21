@@ -38,8 +38,11 @@ public class ChartRepository {
         } else {
             // insert new row
         }
-}
-    private static class insertChartDateAsyncTask extends AsyncTask <Date, Void, Void> {
+    }
+
+    // TODO why static?
+    // replace after with Executor
+    private static class insertChartDateAsyncTask extends AsyncTask<Date, Void, Void> {
 
         private ChartDao chartDao;
 

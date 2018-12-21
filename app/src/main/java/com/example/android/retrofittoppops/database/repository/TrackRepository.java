@@ -41,6 +41,8 @@ public class TrackRepository {
         return trackDao.getAllTracks();
     }
 
+    // TODO
+    // replace with Executor
     // Insert functions
     public void insertAllTracks(ChartDataTracks... track) {
         new insertAllAsyncTask(trackDao, albumDao,artistDao).execute(track);
