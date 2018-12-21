@@ -14,6 +14,7 @@ import com.example.android.retrofittoppops.database.entity.TrackEntity;
 import com.example.android.retrofittoppops.model.Chart.ChartDataTracks;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
@@ -51,10 +52,13 @@ public class TrackRepository {
         private AlbumDao albumDao;
         private ArtistDao artistDao;
 
+
         insertAllAsyncTask(TrackDao trackDao, AlbumDao albumDao, ArtistDao artistDao) {
             this.trackDao = trackDao;
             this.albumDao = albumDao;
             this.artistDao = artistDao;
+
+
         }
 
         @Override

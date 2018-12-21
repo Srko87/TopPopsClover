@@ -28,6 +28,7 @@ import com.example.android.retrofittoppops.rest.ApiClient;
 import com.example.android.retrofittoppops.rest.ApiInterface;
 import com.example.android.retrofittoppops.viewmodel.TracksViewModel;
 
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -94,10 +95,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ChartTopPops> call, Response<ChartTopPops> response) {
                 ChartTracks chartTracks = response.body().getChartTracks();
+                Date date = new Date();
+
                 tracksViewModel.insertTracks(chartTracks.getChartDataTracksList().toArray(new ChartDataTracks[0]));
                 rvView.setVisibility(View.VISIBLE);
                 pullToRefresh.setRefreshing(false);
-
+                tracksViewModel.insertChartDate(date);
 
             }
 

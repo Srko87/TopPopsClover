@@ -20,7 +20,5 @@ public interface ChartDao {
     @Query("DELETE FROM chart_table")
     void deleteAll();
 
-    @Query("UPDATE chart_table SET modifiedAt = :date, tracks = :tracklist WHERE id = :id")
-    void updateChart(Date date, String tracklist, int id);
 
 }
