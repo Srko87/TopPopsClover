@@ -26,6 +26,9 @@ public class TracksViewModel extends AndroidViewModel {
         chartRepository = new ChartRepository(application);
     }
 
+    // TODO
+    // make LiveData from JOIN query
+    // fetch TrackArtistHelper from database
     public LiveData<List<TrackEntity>> getAllTracks() {
         return trackRepository.getAllTracks();
     }

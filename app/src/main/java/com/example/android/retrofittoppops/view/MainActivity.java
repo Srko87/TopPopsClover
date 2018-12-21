@@ -1,16 +1,6 @@
 package com.example.android.retrofittoppops.view;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,19 +14,27 @@ import com.example.android.retrofittoppops.database.entity.TrackEntity;
 import com.example.android.retrofittoppops.model.Chart.ChartDataTracks;
 import com.example.android.retrofittoppops.model.Chart.ChartTopPops;
 import com.example.android.retrofittoppops.model.Chart.ChartTracks;
+import com.example.android.retrofittoppops.model.TrackArtistHelper;
 import com.example.android.retrofittoppops.rest.ApiClient;
 import com.example.android.retrofittoppops.rest.ApiInterface;
 import com.example.android.retrofittoppops.viewmodel.TracksViewModel;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,7 +71,15 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(List<TrackEntity> data) {
                 if (data != null && data.size() != 0) {
                     tvNoData.setVisibility(View.GONE);
-                    adapterMainRv.updateItems(data);
+
+                    // TODO
+                    // maybe replace with JOIN query
+                    List<TrackArtistHelper> newData = new ArrayList<>();
+                    for (TrackEntity track : data) {
+                        newData.add(new TrackArtistHelper(track, null));
+                    }
+
+                    adapterMainRv.updateItems(newData);
                     rvView.setVisibility(View.VISIBLE);
                 } else {
                     rvView.setVisibility(View.GONE);
@@ -115,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
@@ -152,6 +157,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
-      return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 }
