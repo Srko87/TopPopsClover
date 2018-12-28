@@ -76,7 +76,8 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyviewHolder
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                 //   DetailActivity.StartActivity((Activity)view.getContext(), item);
+                    //TODO Handle recycler on click
+                    //   DetailActivity.StartActivity((Activity)view.getContext(), item);
                 }
             });
         }

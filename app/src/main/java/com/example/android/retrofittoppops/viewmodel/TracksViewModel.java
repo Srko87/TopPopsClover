@@ -29,6 +29,7 @@ public class TracksViewModel extends AndroidViewModel {
     public LiveData<List<TrackEntity>> getAllTracks() {
         return trackRepository.getAllTracks();
     }
+
     public void insertTracks( ChartDataTracks... chartDataTracks) {
         trackRepository.insertAllTracks(chartDataTracks);
     }

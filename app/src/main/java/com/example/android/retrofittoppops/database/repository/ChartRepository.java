@@ -21,7 +21,7 @@ public class ChartRepository {
     }
 
     public ChartEntity getLastChart() {
-        return chartDao.getLastChart();
+        return chartDao.getMostRecentChart();
     }
 
     public void insertChartDate(Date date) {

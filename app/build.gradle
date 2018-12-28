@@ -16,6 +16,10 @@ android {
         }
 
     }
+    sourceSets {
+        androidTest.assets.srcDirs +=
+                files("$projectDir/schemas".toString())
+    }
     buildTypes {
         release {
             minifyEnabled false

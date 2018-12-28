@@ -14,12 +14,11 @@ import androidx.room.Transaction;
 @Dao
 public interface ArtistDao {
 
-    @Transaction
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(ArtistEntity... artistEntities);
 
-    @Query("SELECT * FROM artist_table")
-    LiveData<List<ArtistEntity>> getAllArtists();
+    @Query("SELECT * FROM artist_table WHERE id = :id")
+    ArtistEntity getArtist(String id);
 
     @Query("DELETE FROM artist_table")
     void deleteAll();

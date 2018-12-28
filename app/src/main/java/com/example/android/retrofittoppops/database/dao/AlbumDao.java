@@ -14,12 +14,8 @@ import androidx.room.Transaction;
 @Dao
 public interface AlbumDao {
 
-    @Transaction
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(AlbumEntity... albumEntities);
-
-    @Query("SELECT * FROM album_table")
-    LiveData<List<AlbumEntity>> getAllAlbums();
 
     @Query("DELETE FROM album_table")
     void deleteAll();

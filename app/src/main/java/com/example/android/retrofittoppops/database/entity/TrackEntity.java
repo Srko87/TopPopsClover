@@ -17,13 +17,15 @@ import static androidx.room.ForeignKey.CASCADE;
 
 public class TrackEntity {
 
+
+    private String id;
+
     @NonNull
     @PrimaryKey
-    private String id;
+    private Integer position;
 
     private String title;
     private Integer duration;
-    private Integer position;
     private Integer artistId;
     private Integer albumId;
 
