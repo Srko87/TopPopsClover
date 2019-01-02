@@ -1,10 +1,11 @@
 package com.example.android.retrofittoppops.model.Chart;
 
+import com.example.android.retrofittoppops.model.BaseModel;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class ChartTopPops implements Serializable {
+public class ChartTopPops extends BaseModel implements Serializable  {
 
     @SerializedName("tracks")
     private ChartTracks chartTracks;

@@ -69,7 +69,9 @@ public class MainActivity extends AppCompatActivity {
         adapterMainRv = new ChartAdapter(tracksViewModel, MainActivity.this);
         rvView.setAdapter(adapterMainRv);
 
-
+        // TODO
+        // observe Chart entries for today and fetch today's chart tracks
+        // hint observe only today's chart entry
         tracksViewModel.getAllTracks().observe(this, new Observer<List<TrackEntity>>() {
             @Override
             public void onChanged(List<TrackEntity> data) {
@@ -92,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         pullToRefresh.setOnRefreshListener(() -> {
+            // TODO
+            // remove view references from ViewModel methods
             tracksViewModel.fetchCharts(rvView, tvNoData);
 
             Toast.makeText(getApplicationContext(), "List refreshed", Toast.LENGTH_SHORT).show();
