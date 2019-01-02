@@ -1,6 +1,16 @@
 package com.example.android.retrofittoppops.view;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,24 +33,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.rv_main_activity)
     RecyclerView rvView;
-    ChartAdapter adapterMainRv;
 
     @BindView(R.id.toolbar)
     Toolbar myToolbar;
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout pullToRefresh;
 
+    private ChartAdapter adapterMainRv;
     private TracksViewModel tracksViewModel;
 
     @Override
@@ -59,27 +63,26 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(myToolbar);
-
+        tracksViewModel = ViewModelProviders.of(this).get(TracksViewModel.class);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvView.setLayoutManager(layoutManager);
-        adapterMainRv = new ChartAdapter();
+        adapterMainRv = new ChartAdapter(tracksViewModel, MainActivity.this);
         rvView.setAdapter(adapterMainRv);
 
-        tracksViewModel = ViewModelProviders.of(this).get(TracksViewModel.class);
+
         tracksViewModel.getAllTracks().observe(this, new Observer<List<TrackEntity>>() {
             @Override
             public void onChanged(List<TrackEntity> data) {
                 if (data != null && data.size() != 0) {
                     tvNoData.setVisibility(View.GONE);
 
-                    // TODO
-                    // maybe replace with JOIN query
-                    List<TrackArtistHelper> newData = new ArrayList<>();
-                    for (TrackEntity track : data) {
-                        newData.add(new TrackArtistHelper(track, null));
+                    List<TrackArtistHelper> adapterData = new ArrayList<>();
+
+                    for (TrackEntity item : data) {
+                        adapterData.add(new TrackArtistHelper(item));
                     }
 
-                    adapterMainRv.updateItems(newData);
+                    adapterMainRv.updateItems(adapterData);
                     rvView.setVisibility(View.VISIBLE);
                 } else {
                     rvView.setVisibility(View.GONE);
@@ -89,36 +92,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         pullToRefresh.setOnRefreshListener(() -> {
-            fetchCharts();
+            tracksViewModel.fetchCharts(rvView, tvNoData);
+
             Toast.makeText(getApplicationContext(), "List refreshed", Toast.LENGTH_SHORT).show();
+            pullToRefresh.setRefreshing(false);
         });
     }
 
-    public void fetchCharts() {
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ChartTopPops> call = apiService.getTopPops();
-        call.enqueue(new Callback<ChartTopPops>() {
-            @Override
-            public void onResponse(Call<ChartTopPops> call, Response<ChartTopPops> response) {
-                ChartTracks chartTracks = response.body().getChartTracks();
-                Date date = new Date();
 
-                tracksViewModel.insertTracks(chartTracks.getChartDataTracksList().toArray(new ChartDataTracks[0]));
-                rvView.setVisibility(View.VISIBLE);
-                pullToRefresh.setRefreshing(false);
-                tracksViewModel.insertChartDate(date);
-
-            }
-
-            @Override
-            public void onFailure(Call<ChartTopPops> call, Throwable t) {
-                Log.e("API error", "Error fetching charts.");
-                pullToRefresh.setRefreshing(false);
-                tvNoData.setVisibility(View.VISIBLE);
-                rvView.setVisibility(View.GONE);
-            }
-        });
-    }
 
 
     @Override
@@ -133,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sort_normal: {
-//                ArrayList<ChartDataTracks> ascendingTracks = new ArrayList<>(adapterMainRv.getData());
+//                  ArrayList<ChartDataTracks> ascendingTracks = new ArrayList<>(adapterMainRv.getData());
 //                Collections.sort(ascendingTracks, (t1, t2) -> t1.getPosition() - t2.getPosition());
 //
 //                adapterMainRv.setDataTracksList(ascendingTracks);
@@ -156,7 +137,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Sorted descending by track duration!", Toast.LENGTH_SHORT).show();
                 break;
             }
+            case R.id.delete_all: {
+                tracksViewModel.deleteAll();
+                rvView.setVisibility(View.GONE);
+                tvNoData.setVisibility(View.VISIBLE);
+            }
         }
-        return super.onOptionsItemSelected(item);
+      return super.onOptionsItemSelected(item);
     }
 }

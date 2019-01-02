@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class ChartArtistTracks implements Serializable {
 
     @SerializedName("id")
-    private int id;
+    private String id;
     @SerializedName("name")
     private String name;
     @SerializedName("link")
@@ -30,7 +30,7 @@ public class ChartArtistTracks implements Serializable {
     private String type;
 
 
-    ChartArtistTracks(int id, String name, String link, String picture, String pictureSmall, String pictureMedium, String pictureBig, String pictureXl, boolean radio, String tracklist, String type) {
+    ChartArtistTracks(String id, String name, String link, String picture, String pictureSmall, String pictureMedium, String pictureBig, String pictureXl, boolean radio, String tracklist, String type) {
         this.id = id;
         this.name = name;
         this.link = link;
@@ -44,11 +44,11 @@ public class ChartArtistTracks implements Serializable {
         this.type = type;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

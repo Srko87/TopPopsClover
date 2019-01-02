@@ -11,7 +11,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-@Entity (tableName = "chart_table")
+@Entity(tableName = "chart_table")
 public class ChartEntity {
 
     @NonNull
@@ -22,6 +22,8 @@ public class ChartEntity {
     private Date createdAt;
     @TypeConverters(DateConverter.class)
     private Date modifiedAt;
+    @TypeConverters(TrackConverter.class)
+    private List<String> tracks;
 
 
     @NonNull
@@ -49,5 +51,7 @@ public class ChartEntity {
         this.modifiedAt = modifiedAt;
     }
 
+    public List<String> getTracks() { return tracks; }
 
+    public void setTracks(List<String> tracks) { this.tracks = tracks; }
 }
