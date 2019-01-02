@@ -13,6 +13,6 @@ public interface ApiInterface {
     Call<ChartTopPops> getTopPops();
 
     @GET("album/{album_id}")
-    Call<AlbumAlbum> getAlbum(@Path("album_id") int album_id);
+    Call<AlbumAlbum> getAlbum(@Path("album_id") String album_id);
 
 }
