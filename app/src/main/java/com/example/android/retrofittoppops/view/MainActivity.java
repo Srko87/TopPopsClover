@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,21 +20,14 @@ import android.widget.Toast;
 import com.example.android.retrofittoppops.R;
 import com.example.android.retrofittoppops.controller.ChartAdapter;
 import com.example.android.retrofittoppops.database.entity.TrackEntity;
-import com.example.android.retrofittoppops.model.Chart.ChartDataTracks;
-import com.example.android.retrofittoppops.model.Chart.ChartTopPops;
-import com.example.android.retrofittoppops.model.Chart.ChartTracks;
 import com.example.android.retrofittoppops.model.TrackArtistHelper;
-import com.example.android.retrofittoppops.rest.ApiClient;
-import com.example.android.retrofittoppops.rest.ApiInterface;
+
 import com.example.android.retrofittoppops.viewmodel.TracksViewModel;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         tracksViewModel = ViewModelProviders.of(this).get(TracksViewModel.class);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvView.setLayoutManager(layoutManager);
-        adapterMainRv = new ChartAdapter(tracksViewModel, MainActivity.this);
+        adapterMainRv = new ChartAdapter(tracksViewModel);
         rvView.setAdapter(adapterMainRv);
 
 
