@@ -12,6 +12,7 @@ import com.example.android.retrofittoppops.model.Chart.ChartDataTracks;
 import com.example.android.retrofittoppops.model.Chart.ChartTopPops;
 import com.example.android.retrofittoppops.rest.ApiClient;
 import com.example.android.retrofittoppops.rest.ApiInterface;
+import com.example.android.retrofittoppops.rest.CustomCallback;
 
 import java.util.Date;
 import java.util.List;
@@ -37,6 +38,9 @@ public class TracksViewModel extends AndroidViewModel {
         chartRepository = new ChartRepository(application);
     }
 
+    // TODO
+    // make LiveData from JOIN query
+    // fetch TrackArtistHelper from database
     public LiveData<List<TrackEntity>> getAllTracks() {
         return trackRepository.getAllTracks();
     }
@@ -61,9 +65,9 @@ public class TracksViewModel extends AndroidViewModel {
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ChartTopPops> call = apiService.getTopPops();
-        call.enqueue(new Callback<ChartTopPops>() {
+        call.enqueue(new CustomCallback<ChartTopPops>() {
             @Override
-            public void onResponse(Call<ChartTopPops> call, Response<ChartTopPops> response) {
+            public void onSuccess(Call<ChartTopPops> call, Response<ChartTopPops> response) {
                 try{
                     Date date = new Date();
                     chartTopPops = response.body();

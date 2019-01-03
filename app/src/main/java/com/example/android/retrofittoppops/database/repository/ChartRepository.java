@@ -1,7 +1,6 @@
 package com.example.android.retrofittoppops.database.repository;
 
 import android.app.Application;
-import android.os.AsyncTask;
 
 import com.example.android.retrofittoppops.database.TracksDatabase;
 import com.example.android.retrofittoppops.database.dao.ChartDao;
@@ -15,9 +14,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-
-
+// TODO
+// checkout optimised/refactored code
 public class ChartRepository {
 
     private ChartDao chartDao;
@@ -27,85 +25,41 @@ public class ChartRepository {
         chartDao = db.chartDao();
     }
 
-    public ChartEntity getMostRecentChart() {
-        return chartDao.getMostRecentChart();
-    }
-
-
     public void insertOrUpdateChart(Date date, List<ChartDataTracks> chartDataTracksList) {
         DefaultExecutorSupplier.getInstance().forBackgroundTasks().execute(() -> {
-            ChartEntity chartEntity = getMostRecentChart();
-            if (chartEntity != null && DateCompare.isSameDay(chartEntity.getCreatedAt(), date)) {
+
+            ChartEntity chartEntityMostRecent = getMostRecentChart();
+
+            List<String> trackList = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                trackList.add(chartDataTracksList.get(i).getId());
+            }
+
+            if (chartEntityMostRecent != null && DateCompare.isSameDay(chartEntityMostRecent.getCreatedAt(), date)) {
                 // modify existing row
-                DateChartParams dateChartParams = new DateChartParams(date, chartDataTracksList, chartEntity.getId());
-                updateChart(dateChartParams);
+                updateChart(date, trackList, chartEntityMostRecent.getId());
             } else {
                 // insert new row
-                DateChartParams dateChartParams = new DateChartParams(date, chartDataTracksList);
-                insertChart(dateChartParams);
+                ChartEntity chartEntity = new ChartEntity();
+                chartEntity.setCreatedAt(date);
+                chartEntity.setModifiedAt(date);
+                chartEntity.setTracks(trackList);
+
+                insertChart(chartEntity);
             }
         });
     }
 
+    private ChartEntity getMostRecentChart() {
+        return chartDao.getMostRecentChart();
+    }
 
-
-
-    public void insertChart(@NonNull DateChartParams dateChartParams) {
-        Date date = dateChartParams.getDate();
-        List<ChartDataTracks> chartDataTracksList = dateChartParams.getChartDataTracksList();
-
-        List<String> trackList = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++) {
-            trackList.add(chartDataTracksList.get(i).getId());
-        }
-
-        ChartEntity chartEntity = new ChartEntity();
-        chartEntity.setCreatedAt(date);
-        chartEntity.setModifiedAt(date);
-        chartEntity.setTracks(trackList);
-
+    private void insertChart(ChartEntity chartEntity) {
         chartDao.insert(chartEntity);
     }
 
-    private void updateChart(@NonNull DateChartParams dateChartParams) {
-        Date date = dateChartParams.getDate();
-        List<ChartDataTracks> chartDataTracksList = dateChartParams.getChartDataTracksList();
-        int id = dateChartParams.getId();
-
-        List<String> trackList = new ArrayList<>();
-        for (int i = 0; i<10; i++) {
-            trackList.add(chartDataTracksList.get(i).getId());
-        }
-
+    private void updateChart(Date date, List<String> trackList, int id) {
         chartDao.updateChart(date, new Gson().toJson(trackList), id);
-
     }
-
-
-
-
-    public static class DateChartParams {
-        private Date date;
-        private List<ChartDataTracks> chartDataTracksList;
-        private int id;
-
-        public DateChartParams(Date date, List<ChartDataTracks> chartDataTracksList, int id) {
-
-            this.date = date;
-            this.chartDataTracksList = chartDataTracksList;
-            this.id = id;
-            }
-
-            public DateChartParams(Date date, List<ChartDataTracks> chartDataTracksList) {
-            this.date = date;
-            this.chartDataTracksList = chartDataTracksList;
-            }
-
-            public Date getDate() {return date;}
-            public List<ChartDataTracks> getChartDataTracksList() { return chartDataTracksList; }
-            public int getId() { return id; }
-    }
-
 }
 
