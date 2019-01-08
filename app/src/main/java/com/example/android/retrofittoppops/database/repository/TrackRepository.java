@@ -38,9 +38,6 @@ public class TrackRepository {
         return trackDao.getAllTracks();
     }
 
-    // TODO
-    // replace with Executor
-    // Insert functions
 
     public void insertAllTracks(List<ChartDataTracks> chartDataTracksList) {
         DefaultExecutorSupplier.getInstance().forBackgroundTasks().execute(() -> {
@@ -92,8 +89,8 @@ public class TrackRepository {
         void queryFinish(ArtistEntity artistEntity, int position);
     }
 
-    public void getArtist(String id, int position, AsyncResponse delegate) {
-        new GetArtistAsync(artistDao, position, delegate).execute(id);
+    public void getArtist(String id, int position, AsyncResponse listener) {
+        new GetArtistAsync(artistDao, position, listener).execute(id);
     }
 
     private static class GetArtistAsync extends AsyncTask<String, Void, ArtistEntity> {

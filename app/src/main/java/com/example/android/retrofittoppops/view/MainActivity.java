@@ -22,11 +22,11 @@ import com.example.android.retrofittoppops.controller.ChartAdapter;
 import com.example.android.retrofittoppops.database.entity.TrackEntity;
 import com.example.android.retrofittoppops.model.TrackArtistHelper;
 
+import com.example.android.retrofittoppops.rest.ApiService;
 import com.example.android.retrofittoppops.viewmodel.TracksViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 
 import butterknife.BindView;
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private ChartAdapter adapterMainRv;
     private TracksViewModel tracksViewModel;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,49 +62,39 @@ public class MainActivity extends AppCompatActivity {
         adapterMainRv = new ChartAdapter(tracksViewModel);
         rvView.setAdapter(adapterMainRv);
 
-        // TODO
-        // observe Chart entries for today and fetch today's chart tracks
-        // hint observe only today's chart entry
-        tracksViewModel.getAllTracks().observe(this, new Observer<List<TrackEntity>>() {
-            @Override
-            public void onChanged(List<TrackEntity> data) {
-                if (data != null && data.size() != 0) {
-                    tvNoData.setVisibility(View.GONE);
 
-                    List<TrackArtistHelper> adapterData = new ArrayList<>();
+        tracksViewModel.getAllTracks().observe(this, data -> {
+            if (data != null && data.size() != 0) {
+                tvNoData.setVisibility(View.GONE);
 
-                    for (TrackEntity item : data) {
-                        adapterData.add(new TrackArtistHelper(item));
-                    }
+                List<TrackArtistHelper> adapterData = new ArrayList<>();
 
-                    adapterMainRv.updateItems(adapterData);
-                    rvView.setVisibility(View.VISIBLE);
-                } else {
-                    rvView.setVisibility(View.GONE);
-                    tvNoData.setVisibility(View.VISIBLE);
+                for (TrackEntity item : data) {
+                    adapterData.add(new TrackArtistHelper(item));
                 }
+
+                adapterMainRv.updateItems(adapterData);
+                rvView.setVisibility(View.VISIBLE);
+            } else {
+                rvView.setVisibility(View.GONE);
+                tvNoData.setVisibility(View.VISIBLE);
             }
         });
 
         pullToRefresh.setOnRefreshListener(() -> {
-            // TODO
-            // remove view references from ViewModel methods
-            tracksViewModel.fetchCharts(rvView, tvNoData);
+
+            tracksViewModel.fetchCharts();
 
             Toast.makeText(getApplicationContext(), "List refreshed", Toast.LENGTH_SHORT).show();
             pullToRefresh.setRefreshing(false);
         });
     }
 
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return true;
     }
-
 
     //TODO Menu items
     @Override
@@ -139,6 +130,6 @@ public class MainActivity extends AppCompatActivity {
                 tvNoData.setVisibility(View.VISIBLE);
             }
         }
-      return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 }
