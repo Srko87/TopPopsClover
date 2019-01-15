@@ -62,7 +62,11 @@ public class MainActivity extends AppCompatActivity {
         adapterMainRv = new ChartAdapter(tracksViewModel);
         rvView.setAdapter(adapterMainRv);
 
-
+        // TODO
+        // observe Chart entries for today and fetch today's chart tracks
+        // hint observe only today's chart entry
+        // why was this removed?
+        // today's chart is displayed here that is the table that needs to be observed, todays chart entry
         tracksViewModel.getAllTracks().observe(this, data -> {
             if (data != null && data.size() != 0) {
                 tvNoData.setVisibility(View.GONE);

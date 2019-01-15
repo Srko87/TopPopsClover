@@ -89,6 +89,9 @@ public class TrackRepository {
         void queryFinish(ArtistEntity artistEntity, int position);
     }
 
+    // TODO
+    // replace with Executor, no Async tasks, all threading needs to be done with executers
+    // try implementing this without position in method
     public void getArtist(String id, int position, AsyncResponse listener) {
         new GetArtistAsync(artistDao, position, listener).execute(id);
     }
@@ -105,7 +108,6 @@ public class TrackRepository {
             this.artistDao = artistDao;
             this.position = position;
             this.delegate = delegate;
-
         }
 
         @Override
