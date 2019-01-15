@@ -14,7 +14,7 @@ public class CustomCallback<T> implements Callback<T> {
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
         if (response.body() instanceof BaseModel) {
-            if (((BaseModel) response.body()).success == 200) {
+            if ( response.code() == 200) {
                 onSuccess(call, response);
             } else {
                 // show error dialog

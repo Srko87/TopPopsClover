@@ -27,11 +27,9 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyviewHolder
 
     private List<TrackArtistHelper> data = new ArrayList<>();
     private TracksViewModel tracksViewModel;
-    private Context context;
 
-    public ChartAdapter(TracksViewModel tracksViewModel, Context context) {
+    public ChartAdapter(TracksViewModel tracksViewModel) {
         this.tracksViewModel = tracksViewModel;
-        this.context = context;
     }
 
     public void updateItems(List<TrackArtistHelper> list) {
