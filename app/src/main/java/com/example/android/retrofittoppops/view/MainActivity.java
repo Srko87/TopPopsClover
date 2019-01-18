@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     //TODO Menu items
+    // dev new todo
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
