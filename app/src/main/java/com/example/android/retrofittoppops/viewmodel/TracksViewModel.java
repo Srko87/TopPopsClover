@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -36,7 +37,11 @@ public class TracksViewModel extends AndroidViewModel {
     private CompositeDisposable disposables = new CompositeDisposable();
     private MutableLiveData<ArtistEntity> artistEntityLiveData = new MutableLiveData<>();
     private List<TrackArtistHelper> helperList = new ArrayList<>();
+    private MutableLiveData<List<TrackArtistHelper>> tracks = new MutableLiveData<>();
 
+    public MutableLiveData<List<TrackArtistHelper>> getTracks() {
+        return tracks;
+    }
 
     public TracksViewModel(@NonNull Application application) {
         super(application);
@@ -86,6 +91,18 @@ public class TracksViewModel extends AndroidViewModel {
 
     public LiveData<ChartEntity> getLastChartLiveData() {
         return chartRepository.getLastChartLiveData();
+    }
+
+    public void getTracks(List<String> tracksId) {
+        // TODO
+        // MainActivity step 3
+        // do in bg thread, Executer
+        // trackRepository.getTracks(tracksId);
+        // trigger MutableLiveData from step 4 with results (List<Track>)
+        // for each track fetch artist
+        // new ArrayList<TrackArtistHelper>()
+        // new TrackArtistHelper();
+        // tracks.setValue(results (List<TrackArtistHelper>));
     }
 
     public void getTrackHelper(List<String> id) {

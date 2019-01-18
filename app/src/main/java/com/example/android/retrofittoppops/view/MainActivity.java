@@ -95,6 +95,15 @@ public class MainActivity extends AppCompatActivity implements ChartAdapter.Arti
             }
         });
 
+        // TODO
+        // 1 - create LiveData that tracks today's row from Chart table (LiveData Chart)
+        // 2 - when we get a result from LiveData Chart call ViewModel method fetchChartTracks(LiveData Chart -> Chart.tracksList)
+        // 3 - implement Dao query for fetching list of Tracks
+        // 4 - create MutableLiveData in ViewModel that returns List<Track> and is triggered from query in step 3
+        tracksViewModel.getTracks().observe(this, trackArtistHelpers -> {
+            // TODO add to adapter
+        });
+
         pullToRefresh.setOnRefreshListener(() -> {
 
             tracksViewModel.fetchCharts();
