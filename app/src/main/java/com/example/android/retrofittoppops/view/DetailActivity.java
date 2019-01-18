@@ -18,7 +18,7 @@ import com.example.android.retrofittoppops.model.Album.AlbumAlbum;
 import com.example.android.retrofittoppops.model.Album.AlbumTracksData;
 import com.example.android.retrofittoppops.model.Chart.ChartDataTracks;
 import com.example.android.retrofittoppops.rest.ApiClient;
-import com.example.android.retrofittoppops.rest.ApiInterface;
+import com.example.android.retrofittoppops.rest.ApiService;
 import com.example.android.retrofittoppops.utils.Const;
 import com.squareup.picasso.Picasso;
 
@@ -86,7 +86,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void fetchAlbum() {
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        ApiService apiService = ApiClient.getClient().create(ApiService.class);
         Call<AlbumAlbum> call = apiService.getAlbum(track.getChartAlbumTracks().getId());
         call.enqueue(new Callback<AlbumAlbum>() {
             @Override

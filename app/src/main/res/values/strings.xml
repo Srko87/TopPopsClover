@@ -5,4 +5,5 @@
     <string name="artist_name_detail">Artist name: </string>
     <string name="detail_track_list">Album track list: </string>
     <string name="no_data">No data available \n Swipe down to load data</string>
+    <string name="menu_delete_all">Delete All</string>
 </resources>

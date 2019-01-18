@@ -2,7 +2,6 @@ package com.example.android.retrofittoppops.database.repository;
 
 import android.app.Application;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.android.retrofittoppops.database.TracksDatabase;
 import com.example.android.retrofittoppops.database.dao.AlbumDao;
@@ -12,20 +11,19 @@ import com.example.android.retrofittoppops.database.entity.AlbumEntity;
 import com.example.android.retrofittoppops.database.entity.ArtistEntity;
 import com.example.android.retrofittoppops.database.entity.TrackEntity;
 import com.example.android.retrofittoppops.model.Chart.ChartDataTracks;
+import com.example.android.retrofittoppops.threading.DefaultExecutorSupplier;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
 
 public class TrackRepository {
 
+    public static final String TAG = "track repository";
     private TrackDao trackDao;
     private AlbumDao albumDao;
     private ArtistDao artistDao;
-
-    public static final String TAG = "track repository";
 
     public TrackRepository(Application application) {
 
@@ -36,39 +34,19 @@ public class TrackRepository {
         artistDao = db.artistDao();
     }
 
-
     public LiveData<List<TrackEntity>> getAllTracks() {
         return trackDao.getAllTracks();
     }
 
-    // Insert functions
-    public void insertAllTracks(ChartDataTracks... track) {
-        new insertAllAsyncTask(trackDao, albumDao,artistDao).execute(track);
-    }
 
-    private static class insertAllAsyncTask extends AsyncTask<ChartDataTracks, Void, Void> {
+    public void insertAllTracks(List<ChartDataTracks> chartDataTracksList) {
+        DefaultExecutorSupplier.getInstance().forBackgroundTasks().execute(() -> {
 
-        private TrackDao trackDao;
-        private AlbumDao albumDao;
-        private ArtistDao artistDao;
-
-
-        insertAllAsyncTask(TrackDao trackDao, AlbumDao albumDao, ArtistDao artistDao) {
-            this.trackDao = trackDao;
-            this.albumDao = albumDao;
-            this.artistDao = artistDao;
-
-
-        }
-
-        @Override
-        protected Void doInBackground(ChartDataTracks... chartDataTracks) {
-            Log.i(TAG,"inserting into db");
             List<TrackEntity> trackEntities = new ArrayList<>();
             List<AlbumEntity> albumEntities = new ArrayList<>();
             List<ArtistEntity> artistEntities = new ArrayList<>();
 
-            for (ChartDataTracks cDTracks : chartDataTracks) {
+            for (ChartDataTracks cDTracks : chartDataTracksList) {
 
                 ArtistEntity artistEntity = new ArtistEntity();
                 artistEntity.setId(cDTracks.getChartArtistTracks().getId());
@@ -89,43 +67,57 @@ public class TrackRepository {
                 trackEntity.setAlbumId(cDTracks.getChartAlbumTracks().getId());
                 trackEntity.setArtistId(cDTracks.getChartArtistTracks().getId());
                 trackEntities.add(trackEntity);
-
             }
 
             artistDao.insert(artistEntities.toArray(new ArtistEntity[0]));
             albumDao.insert(albumEntities.toArray(new AlbumEntity[0]));
             trackDao.insert(trackEntities.toArray(new TrackEntity[0]));
 
-
-            Log.i(TAG, "inserting done");
-            return null;
-        }
+        });
     }
 
     // Delete functions
     public void deleteAll() {
-        new deleteAllAsyncTask(trackDao, albumDao, artistDao).execute();
-    }
-
-    private static class deleteAllAsyncTask extends AsyncTask<Void, Void, Void> {
-
-        private TrackDao trackDao;
-        private AlbumDao albumDao;
-        private ArtistDao artistDao;
-
-        deleteAllAsyncTask(TrackDao trackDao, AlbumDao albumDao, ArtistDao artistDao) {
-
-            this.trackDao = trackDao;
-            this.albumDao = albumDao;
-            this.artistDao = artistDao;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
+        DefaultExecutorSupplier.getInstance().forBackgroundTasks().execute(() -> {
             trackDao.deleteAll();
             albumDao.deleteAll();
             artistDao.deleteAll();
-            return null;
+        });
+    }
+
+    public interface AsyncResponse{
+        void queryFinish(ArtistEntity artistEntity, int position);
+    }
+
+    public void getArtist(String id, int position, AsyncResponse listener) {
+        new GetArtistAsync(artistDao, position, listener).execute(id);
+    }
+
+    private static class GetArtistAsync extends AsyncTask<String, Void, ArtistEntity> {
+
+        public AsyncResponse delegate;
+
+        private ArtistDao artistDao;
+
+        private int position;
+
+        GetArtistAsync(ArtistDao artistDao, int position, AsyncResponse delegate) {
+            this.artistDao = artistDao;
+            this.position = position;
+            this.delegate = delegate;
+
+        }
+
+        @Override
+        protected ArtistEntity doInBackground(String... ids) {
+            return artistDao.getArtist(ids[0]);
+        }
+
+        @Override
+        protected void onPostExecute(ArtistEntity artistEntity) {
+            super.onPostExecute(artistEntity);
+            delegate.queryFinish(artistEntity, position);
         }
     }
+
 }
