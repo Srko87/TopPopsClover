@@ -8,7 +8,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-// TODO
+// TODO Vida
 // try this out
 public class CustomCallback<T> implements Callback<T> {
     @Override

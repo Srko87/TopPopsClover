@@ -22,4 +22,7 @@ public interface ArtistDao {
 
     @Query("DELETE FROM artist_table")
     void deleteAll();
+
+    @Query("SELECT * FROM artist_table WHERE id = :id")
+    ArtistEntity getArtistById(String id);
 }

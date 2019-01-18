@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-// TODO
+import androidx.lifecycle.LiveData;
+
+// TODO Vida
 // checkout optimised/refactored code
 public class ChartRepository {
 
@@ -25,19 +27,23 @@ public class ChartRepository {
         chartDao = db.chartDao();
     }
 
+    public ChartEntity getMostRecentChart() {
+        return chartDao.getMostRecentChart();
+    }
+
     public void insertOrUpdateChart(Date date, List<ChartDataTracks> chartDataTracksList) {
         DefaultExecutorSupplier.getInstance().forBackgroundTasks().execute(() -> {
 
-            ChartEntity chartEntityMostRecent = getMostRecentChart();
+            ChartEntity lastChartEntity = getMostRecentChart();
 
             List<String> trackList = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
                 trackList.add(chartDataTracksList.get(i).getId());
             }
 
-            if (chartEntityMostRecent != null && DateCompare.isSameDay(chartEntityMostRecent.getCreatedAt(), date)) {
+            if (lastChartEntity != null && DateCompare.isSameDay(lastChartEntity.getCreatedAt(), date)) {
                 // modify existing row
-                updateChart(date, trackList, chartEntityMostRecent.getId());
+                updateChart(date, trackList, lastChartEntity.getId());
             } else {
                 // insert new row
                 ChartEntity chartEntity = new ChartEntity();
@@ -50,8 +56,8 @@ public class ChartRepository {
         });
     }
 
-    private ChartEntity getMostRecentChart() {
-        return chartDao.getMostRecentChart();
+    public LiveData<ChartEntity> getLastChartLiveData() {
+        return chartDao.getMostRecentChartLiveData();
     }
 
     private void insertChart(ChartEntity chartEntity) {

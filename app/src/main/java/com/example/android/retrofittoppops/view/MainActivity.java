@@ -32,7 +32,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ChartAdapter.ArtistCallback {
 
     @BindView(R.id.rv_main_activity)
     RecyclerView rvView;
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         tracksViewModel = ViewModelProviders.of(this).get(TracksViewModel.class);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvView.setLayoutManager(layoutManager);
-        adapterMainRv = new ChartAdapter(tracksViewModel);
+        adapterMainRv = new ChartAdapter(this);
         rvView.setAdapter(adapterMainRv);
 
         // TODO
@@ -67,6 +67,16 @@ public class MainActivity extends AppCompatActivity {
         // hint observe only today's chart entry
         // why was this removed?
         // today's chart is displayed here that is the table that needs to be observed, todays chart entry
+        tracksViewModel.getArtistLiveData().observe(this, data -> {
+            if (data != null) {
+                adapterMainRv.updateArtist(data);
+            }
+        });
+        tracksViewModel.getLastChartLiveData().observe(this, data -> {
+            if (data != null) {
+                tracksViewModel.getTrackHelper(data.getTracks());
+            }
+        });
         tracksViewModel.getAllTracks().observe(this, data -> {
             if (data != null && data.size() != 0) {
                 tvNoData.setVisibility(View.GONE);
@@ -135,5 +145,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onArtistEmpty(String id) {
+        tracksViewModel.getArtistById(id);
     }
 }
