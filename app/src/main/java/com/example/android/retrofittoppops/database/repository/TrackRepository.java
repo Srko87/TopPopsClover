@@ -89,35 +89,32 @@ public class TrackRepository {
         void queryFinish(ArtistEntity artistEntity, int position);
     }
 
-    public void getArtist(String id, int position, AsyncResponse listener) {
-        new GetArtistAsync(artistDao, position, listener).execute(id);
+    // TODO Vida
+    // replace with Executor, no Async tasks, all threading needs to be done with executers
+    // try implementing this without position in method
+
+    public interface ArtistResponse {
+        void onQueryFinish (ArtistEntity artistEntity);
     }
 
-    private static class GetArtistAsync extends AsyncTask<String, Void, ArtistEntity> {
+    public void getArtistById(String id, ArtistResponse listener) {
+        DefaultExecutorSupplier.getInstance().forBackgroundTasks().execute(() -> {
+            if (listener != null) {
+                listener.onQueryFinish(artistDao.getArtistById(id));
+            }
+        });
+    }
 
-        public AsyncResponse delegate;
+    public interface TrackResponse {
+        void onQueryFinish(TrackEntity trackEntity);
+    }
 
-        private ArtistDao artistDao;
-
-        private int position;
-
-        GetArtistAsync(ArtistDao artistDao, int position, AsyncResponse delegate) {
-            this.artistDao = artistDao;
-            this.position = position;
-            this.delegate = delegate;
-
-        }
-
-        @Override
-        protected ArtistEntity doInBackground(String... ids) {
-            return artistDao.getArtist(ids[0]);
-        }
-
-        @Override
-        protected void onPostExecute(ArtistEntity artistEntity) {
-            super.onPostExecute(artistEntity);
-            delegate.queryFinish(artistEntity, position);
-        }
+    public void getTrackById(String id, TrackResponse listener) {
+        DefaultExecutorSupplier.getInstance().forBackgroundTasks().execute(() -> {
+            if (listener != null) {
+                listener.onQueryFinish(trackDao.getTrackById(id));
+            }
+        });
     }
 
 }

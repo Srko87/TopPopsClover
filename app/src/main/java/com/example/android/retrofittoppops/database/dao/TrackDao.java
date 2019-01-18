@@ -23,4 +23,7 @@ public interface TrackDao {
     @Query("DELETE FROM tracks_table")
     void deleteAll();
 
+
+    @Query("SELECT * FROM tracks_table WHERE id = :id")
+    TrackEntity getTrackById(String id);
 }

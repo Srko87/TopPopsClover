@@ -4,6 +4,7 @@ import com.example.android.retrofittoppops.database.entity.ArtistEntity;
 import com.example.android.retrofittoppops.database.repository.TrackRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
@@ -27,15 +28,38 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyviewHolder
 
     private List<TrackArtistHelper> data = new ArrayList<>();
     private TracksViewModel tracksViewModel;
+    private ArtistCallback listener;
+    private volatile HashMap<String, LoadState> artistQueryFlag = new HashMap<>();
 
-    public ChartAdapter(TracksViewModel tracksViewModel) {
-        this.tracksViewModel = tracksViewModel;
+    public enum LoadState {
+        INIT,
+        PROGRESS,
+        DONE
+    }
+
+    public ChartAdapter(ArtistCallback listener) {
+        this.listener = listener;
     }
 
     public void updateItems(List<TrackArtistHelper> list) {
         data.clear();
         data.addAll(list);
+        for (TrackArtistHelper item : data) {
+            if (item.track.getArtistId() != null){
+                artistQueryFlag.put(item.track.getArtistId(), LoadState.INIT);
+            }
+        }
         notifyDataSetChanged();
+    }
+    public void updateArtist(ArtistEntity artistEntity) {
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).track.getArtistId().equals(artistEntity.getId())){
+                data.get(i).setArtist(artistEntity);
+                artistQueryFlag.put(data.get(i).track.getArtistId(), LoadState.DONE);
+                notifyDataSetChanged();
+            }
+        }
+
     }
 
     @NonNull
@@ -88,10 +112,14 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyviewHolder
             songName.setText("Song name: " + item.track.getTitle());
             songDuration.setText(String.valueOf("Song Duration: " + Tools.secondsToString(item.track.getDuration())));
 
-            if (item.artist == null) {
-                tracksViewModel.getArtist(item.track.getArtistId(), position, ChartAdapter.this);
-            } else {
-                artistName.setText("Artist name: " + item.artist.getName());
+//            Not sure if this is good
+            if (item.track.getArtistId() != null) {
+                if (item.artist == null && artistQueryFlag.get(item.track.getArtistId()) == LoadState.INIT) {
+                    artistQueryFlag.put(item.track.getArtistId(), LoadState.PROGRESS);
+                    listener.onArtistEmpty(item.track.getArtistId());
+                } else if (item.artist != null && artistQueryFlag.get(item.track.getArtistId()) == LoadState.DONE){
+                    artistName.setText(item.artist.getName());
+                }
             }
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -102,5 +130,8 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyviewHolder
                 }
             });
         }
+    }
+    public interface ArtistCallback {
+        void onArtistEmpty(String id);
     }
 }
