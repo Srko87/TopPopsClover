@@ -18,6 +18,7 @@ import com.example.android.retrofittoppops.rest.ApiService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -49,27 +50,12 @@ public class TracksViewModel extends AndroidViewModel {
         chartRepository = new ChartRepository(application);
     }
 
-    // TODO FIXME
-    // make LiveData from JOIN query
-    // fetch TrackArtistHelper from database
-    public LiveData<List<TrackEntity>> getAllTracks() {
-        return trackRepository.getAllTracks();
-    }
-
     private void insertTracks(List<ChartDataTracks> chartDataTracksList) {
         trackRepository.insertAllTracks(chartDataTracksList);
     }
 
     public void deleteAll() {
         trackRepository.deleteAll();
-    }
-
-    public void getArtistById(String id) {
-        trackRepository.getArtistById(id, artistEntity -> artistEntityLiveData.postValue(artistEntity));
-    }
-
-    public LiveData<ArtistEntity> getArtistLiveData() {
-        return  artistEntityLiveData;
     }
 
     private void insertOrUpdateChart(Date date, List<ChartDataTracks> chartDataTracksList) {
@@ -93,7 +79,10 @@ public class TracksViewModel extends AndroidViewModel {
         return chartRepository.getLastChartLiveData();
     }
 
-    public void getTracks(List<String> tracksId) {
+    public LiveData<List<TrackEntity>> getTracks(List<String> tracksId) {
+        return trackRepository.getLastTracksById(tracksId);
+
+
         // TODO
         // MainActivity step 3
         // do in bg thread, Executer
@@ -105,24 +94,36 @@ public class TracksViewModel extends AndroidViewModel {
         // tracks.setValue(results (List<TrackArtistHelper>));
     }
 
-    public void getTrackHelper(List<String> id) {
-        helperList.clear();
-        for (int i = 0; i < id.size(); i++) {
-            TrackArtistHelper helper = new TrackArtistHelper();
-            trackRepository.getTrackById(id.get(i), trackEntity -> {
-                helper.setTrack(trackEntity);
-                trackRepository.getArtistById(trackEntity.getArtistId(), artistEntity -> {
-                    helper.setArtist(artistEntity);
-                    helperList.add(helper);
-                });
-            });
-        }
+    public LiveData<List<ArtistEntity>> getArtistsById(Set<String> artistIdSet) {
+        return trackRepository.getArtistsById(artistIdSet);
     }
-
 
     @Override
     protected void onCleared() {
         super.onCleared();
         disposables.clear();
     }
+    //    public void getTrackHelper(List<String> id) {
+//        helperList.clear();
+//        for (int i = 0; i < id.size(); i++) {
+//            TrackArtistHelper helper = new TrackArtistHelper();
+//            trackRepository.getTrackById(id.get(i), trackEntity -> {
+//                helper.setTrack(trackEntity);
+//                trackRepository.getArtistById(trackEntity.getArtistId(), artistEntity -> {
+//                    helper.setArtist(artistEntity);
+//                    helperList.add(helper);
+//                });
+//            });
+//        }
+//    }
+//    public LiveData<List<TrackEntity>> getAllTracks() {
+//        return trackRepository.getAllTracks();
+//    }
+
+//    public LiveData<ArtistEntity> getArtistLiveData() {
+//        return  artistEntityLiveData;
+//    }
+    //    public void getArtistById(String id) {
+//        trackRepository.getArtistById(id, artistEntity -> artistEntityLiveData.postValue(artistEntity));
+
 }

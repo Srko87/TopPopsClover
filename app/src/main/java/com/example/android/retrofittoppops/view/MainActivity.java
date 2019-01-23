@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.android.retrofittoppops.R;
 import com.example.android.retrofittoppops.controller.ChartAdapter;
+import com.example.android.retrofittoppops.database.entity.ArtistEntity;
 import com.example.android.retrofittoppops.database.entity.TrackEntity;
 import com.example.android.retrofittoppops.model.TrackArtistHelper;
 
@@ -26,13 +27,14 @@ import com.example.android.retrofittoppops.rest.ApiService;
 import com.example.android.retrofittoppops.viewmodel.TracksViewModel;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements ChartAdapter.ArtistCallback {
+public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.rv_main_activity)
     RecyclerView rvView;
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements ChartAdapter.Arti
         tracksViewModel = ViewModelProviders.of(this).get(TracksViewModel.class);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvView.setLayoutManager(layoutManager);
-        adapterMainRv = new ChartAdapter(this);
+        adapterMainRv = new ChartAdapter();
         rvView.setAdapter(adapterMainRv);
 
         // TODO
@@ -67,40 +69,75 @@ public class MainActivity extends AppCompatActivity implements ChartAdapter.Arti
         // hint observe only today's chart entry
         // why was this removed?
         // today's chart is displayed here that is the table that needs to be observed, todays chart entry
-        tracksViewModel.getArtistLiveData().observe(this, data -> {
-            if (data != null) {
-                adapterMainRv.updateArtist(data);
-            }
-        });
-        tracksViewModel.getLastChartLiveData().observe(this, data -> {
-            if (data != null) {
-                tracksViewModel.getTrackHelper(data.getTracks());
-            }
-        });
-        tracksViewModel.getAllTracks().observe(this, data -> {
-            if (data != null && data.size() != 0) {
-                tvNoData.setVisibility(View.GONE);
-
-                List<TrackArtistHelper> adapterData = new ArrayList<>();
-
-                for (TrackEntity item : data) {
-                    adapterData.add(new TrackArtistHelper(item));
-                }
-
-                adapterMainRv.updateItems(adapterData);
-                rvView.setVisibility(View.VISIBLE);
-            } else {
-                rvView.setVisibility(View.GONE);
-                tvNoData.setVisibility(View.VISIBLE);
-            }
-        });
+//        tracksViewModel.getArtistLiveData().observe(this, data -> {
+//            if (data != null) {
+//                adapterMainRv.updateArtist(data);
+//            }
+//        });
+//        tracksViewModel.getLastChartLiveData().observe(this, data -> {
+//            if (data != null) {
+//                tracksViewModel.getTrackHelper(data.getTracks());
+//            }
+//        });
+//        tracksViewModel.getAllTracks().observe(this, data -> {
+//            if (data != null && data.size() != 0) {
+//                tvNoData.setVisibility(View.GONE);
+//
+//                List<TrackArtistHelper> adapterData = new ArrayList<>();
+//
+//                for (TrackEntity item : data) {
+//                    adapterData.add(new TrackArtistHelper(item));
+//                }
+//
+//                adapterMainRv.updateItems(adapterData);
+//                rvView.setVisibility(View.VISIBLE);
+//            } else {
+//                rvView.setVisibility(View.GONE);
+//                tvNoData.setVisibility(View.VISIBLE);
+//            }
+//        });
 
         // TODO
         // 1 - create LiveData that tracks today's row from Chart table (LiveData Chart)
         // 2 - when we get a result from LiveData Chart call ViewModel method fetchChartTracks(LiveData Chart -> Chart.tracksList)
         // 3 - implement Dao query for fetching list of Tracks
         // 4 - create MutableLiveData in ViewModel that returns List<Track> and is triggered from query in step 3
-        tracksViewModel.getTracks().observe(this, trackArtistHelpers -> {
+        tracksViewModel.getLastChartLiveData().observe(this, chartEntity -> {
+
+            if (chartEntity != null) {
+
+                tracksViewModel.getTracks(chartEntity.getTracks()).observe(this, trackEntities -> {
+
+                    HashSet<String> artistIdList = new HashSet<>();
+                    for (TrackEntity item : trackEntities) {
+                        artistIdList.add(item.getArtistId());
+                    }
+
+                    tracksViewModel.getArtistsById(artistIdList).observe(this, artistEntities -> {
+
+                        ArrayList<TrackArtistHelper> adapterData = new ArrayList<>();
+                        for (TrackEntity item : trackEntities) {
+                            for (ArtistEntity artistItem : artistEntities) {
+                                if (item.getArtistId().equals(artistItem.getId())) {
+                                    adapterData.add(new TrackArtistHelper(item, artistItem));
+                                }
+                            }
+
+                        }
+                        if (adapterData.size() != 0) {
+                            tvNoData.setVisibility(View.GONE);
+
+
+                            adapterMainRv.updateItems(adapterData);
+                            rvView.setVisibility(View.VISIBLE);
+                        } else {
+                            rvView.setVisibility(View.GONE);
+                            tvNoData.setVisibility(View.VISIBLE);
+                        }
+                    });
+
+                });
+            }
             // TODO add to adapter
         });
 
@@ -157,8 +194,4 @@ public class MainActivity extends AppCompatActivity implements ChartAdapter.Arti
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onArtistEmpty(String id) {
-        tracksViewModel.getArtistById(id);
-    }
 }

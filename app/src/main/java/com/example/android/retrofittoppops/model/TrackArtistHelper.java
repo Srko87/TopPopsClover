@@ -10,6 +10,11 @@ public class TrackArtistHelper {
 
     public TrackArtistHelper(TrackEntity track) {this.track = track; }
 
+    public TrackArtistHelper(TrackEntity track, ArtistEntity artist) {
+        this.track = track;
+        this.artist = artist;
+    }
+
     public TrackArtistHelper () {}
 
     public void setArtist(ArtistEntity artist) {

@@ -26,4 +26,7 @@ public interface TrackDao {
 
     @Query("SELECT * FROM tracks_table WHERE id = :id")
     TrackEntity getTrackById(String id);
+
+    @Query("SELECT * FROM tracks_table WHERE id IN (:trackIdList)")
+    LiveData <List<TrackEntity>> getLastTracksById(List<String> trackIdList);
 }
