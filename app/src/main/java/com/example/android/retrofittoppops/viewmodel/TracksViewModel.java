@@ -1,7 +1,6 @@
 package com.example.android.retrofittoppops.viewmodel;
 
 import android.app.Application;
-import android.widget.Toast;
 
 import com.example.android.retrofittoppops.database.entity.ArtistEntity;
 import com.example.android.retrofittoppops.database.entity.ChartEntity;
@@ -9,22 +8,18 @@ import com.example.android.retrofittoppops.database.entity.TrackEntity;
 import com.example.android.retrofittoppops.database.repository.ChartRepository;
 import com.example.android.retrofittoppops.database.repository.TrackRepository;
 import com.example.android.retrofittoppops.model.Chart.ChartDataTracks;
-import com.example.android.retrofittoppops.model.Chart.ChartTopPops;
 import com.example.android.retrofittoppops.model.TrackArtistHelper;
 import com.example.android.retrofittoppops.rest.ApiClient;
 import com.example.android.retrofittoppops.rest.ApiService;
 
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -36,8 +31,6 @@ public class TracksViewModel extends AndroidViewModel {
     private TrackRepository trackRepository;
     private ChartRepository chartRepository;
     private CompositeDisposable disposables = new CompositeDisposable();
-    private MutableLiveData<ArtistEntity> artistEntityLiveData = new MutableLiveData<>();
-    private List<TrackArtistHelper> helperList = new ArrayList<>();
     private MutableLiveData<List<TrackArtistHelper>> tracks = new MutableLiveData<>();
 
     public MutableLiveData<List<TrackArtistHelper>> getTracks() {
@@ -75,27 +68,20 @@ public class TracksViewModel extends AndroidViewModel {
                 }));
     }
 
-    public LiveData<ChartEntity> getLastChartLiveData() {
-        return chartRepository.getLastChartLiveData();
+    public LiveData<ChartEntity> getChartLiveData() {
+        return chartRepository.getChartLiveData();
     }
 
     public LiveData<List<TrackEntity>> getTracks(List<String> tracksId) {
         return trackRepository.getLastTracksById(tracksId);
-
-
-        // TODO
-        // MainActivity step 3
-        // do in bg thread, Executer
-        // trackRepository.getTracks(tracksId);
-        // trigger MutableLiveData from step 4 with results (List<Track>)
-        // for each track fetch artist
-        // new ArrayList<TrackArtistHelper>()
-        // new TrackArtistHelper();
-        // tracks.setValue(results (List<TrackArtistHelper>));
     }
 
-    public LiveData<List<ArtistEntity>> getArtistsById(Set<String> artistIdSet) {
-        return trackRepository.getArtistsById(artistIdSet);
+    public List<TrackEntity> getTracksById(List<String> trackIds) {
+        return trackRepository.getTracksById(trackIds);
+    }
+
+    public List<ArtistEntity> getArtistsById(List<String> artistIds) {
+        return trackRepository.getArtistsById(artistIds);
     }
 
     @Override
@@ -103,27 +89,4 @@ public class TracksViewModel extends AndroidViewModel {
         super.onCleared();
         disposables.clear();
     }
-    //    public void getTrackHelper(List<String> id) {
-//        helperList.clear();
-//        for (int i = 0; i < id.size(); i++) {
-//            TrackArtistHelper helper = new TrackArtistHelper();
-//            trackRepository.getTrackById(id.get(i), trackEntity -> {
-//                helper.setTrack(trackEntity);
-//                trackRepository.getArtistById(trackEntity.getArtistId(), artistEntity -> {
-//                    helper.setArtist(artistEntity);
-//                    helperList.add(helper);
-//                });
-//            });
-//        }
-//    }
-//    public LiveData<List<TrackEntity>> getAllTracks() {
-//        return trackRepository.getAllTracks();
-//    }
-
-//    public LiveData<ArtistEntity> getArtistLiveData() {
-//        return  artistEntityLiveData;
-//    }
-    //    public void getArtistById(String id) {
-//        trackRepository.getArtistById(id, artistEntity -> artistEntityLiveData.postValue(artistEntity));
-
 }

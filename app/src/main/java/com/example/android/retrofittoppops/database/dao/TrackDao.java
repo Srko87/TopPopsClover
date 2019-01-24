@@ -13,7 +13,6 @@ import androidx.room.Query;
 @Dao
 public interface TrackDao {
 
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(TrackEntity... trackEntities);
 
@@ -28,5 +27,8 @@ public interface TrackDao {
     TrackEntity getTrackById(String id);
 
     @Query("SELECT * FROM tracks_table WHERE id IN (:trackIdList)")
-    LiveData <List<TrackEntity>> getLastTracksById(List<String> trackIdList);
+    LiveData<List<TrackEntity>> getLastTracksById(List<String> trackIdList);
+
+    @Query("SELECT * FROM tracks_table WHERE id IN (:trackIdList) ORDER BY position ASC")
+    List<TrackEntity> getTracksById(List<String> trackIdList);
 }

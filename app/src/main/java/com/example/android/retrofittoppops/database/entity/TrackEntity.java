@@ -4,7 +4,6 @@ package com.example.android.retrofittoppops.database.entity;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -17,13 +16,10 @@ import static androidx.room.ForeignKey.CASCADE;
 
 public class TrackEntity {
 
-
-    private String id;
-
     @NonNull
     @PrimaryKey
+    private String id;
     private Integer position;
-
     private String title;
     private Integer duration;
     private String artistId;

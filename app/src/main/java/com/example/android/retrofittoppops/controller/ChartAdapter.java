@@ -1,13 +1,10 @@
 package com.example.android.retrofittoppops.controller;
 
-import com.example.android.retrofittoppops.database.entity.ArtistEntity;
-import com.example.android.retrofittoppops.database.repository.TrackRepository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import android.content.Context;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,36 +13,19 @@ import android.widget.TextView;
 import com.example.android.retrofittoppops.R;
 import com.example.android.retrofittoppops.model.TrackArtistHelper;
 import com.example.android.retrofittoppops.utils.Tools;
-import com.example.android.retrofittoppops.view.DetailActivity;
-import com.example.android.retrofittoppops.viewmodel.TracksViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyviewHolder> implements TrackRepository.AsyncResponse {
+public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyviewHolder> {
 
     private List<TrackArtistHelper> data = new ArrayList<>();
-    private TracksViewModel tracksViewModel;
-    private volatile HashMap<String, LoadState> artistQueryFlag = new HashMap<>();
-
-    public enum LoadState {
-        INIT,
-        PROGRESS,
-        DONE
-    }
-
-
 
     public void updateItems(List<TrackArtistHelper> list) {
         data.clear();
         data.addAll(list);
-        for (TrackArtistHelper item : data) {
-            if (item.track.getArtistId() != null) {
-                artistQueryFlag.put(item.track.getArtistId(), LoadState.INIT);
-            }
-        }
         notifyDataSetChanged();
     }
 
@@ -71,11 +51,6 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyviewHolder
         return super.getItemViewType(position);
     }
 
-    @Override
-    public void queryFinish(ArtistEntity artistEntity, int position) {
-        data.get(position).artist = artistEntity;
-        notifyItemChanged(position);
-    }
 
     public class MyviewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.song_position_tv)
@@ -104,9 +79,13 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyviewHolder
                 artistName.setText(item.artist.getName());
             }
 
-            itemView.setOnClickListener(view -> {
-                //TODO Handle recycler on click
-//                   DetailActivity.StartActivity((Activity)view.getContext(), item);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //TODO Handle recycler on click
+//                       DetailActivity.StartActivity((Activity)view.getContext(), item);
+                }
             });
         }
     }

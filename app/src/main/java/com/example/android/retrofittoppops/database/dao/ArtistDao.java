@@ -25,10 +25,6 @@ public interface ArtistDao {
     @Query("DELETE FROM artist_table")
     void deleteAll();
 
-    @Query("SELECT * FROM artist_table WHERE id = :id")
-    ArtistEntity getArtistById(String id);
-
     @Query("SELECT * FROM artist_table WHERE id IN (:artistIdList)")
-    LiveData <List<ArtistEntity>> getArtistsById(Set<String> artistIdList);
-
+    List<ArtistEntity> getArtistsById(List<String> artistIdList);
 }
