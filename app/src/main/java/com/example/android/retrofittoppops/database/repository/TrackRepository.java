@@ -15,6 +15,7 @@ import com.example.android.retrofittoppops.threading.DefaultExecutorSupplier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import androidx.lifecycle.LiveData;
 
@@ -103,6 +104,14 @@ public class TrackRepository {
                 listener.onQueryFinish(artistDao.getArtistById(id));
             }
         });
+    }
+
+    public LiveData<List<TrackEntity>> getLastTracksById(List<String> trackIdList) {
+        return trackDao.getLastTracksById(trackIdList);
+    }
+
+    public LiveData<List<ArtistEntity>> getArtistsById(Set<String> artistIdList) {
+        return artistDao.getArtistsById(artistIdList);
     }
 
     public interface TrackResponse {

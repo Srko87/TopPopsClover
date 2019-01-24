@@ -1,8 +1,10 @@
 package com.example.android.retrofittoppops.database.dao;
 
 import com.example.android.retrofittoppops.database.entity.ArtistEntity;
+import com.example.android.retrofittoppops.database.entity.TrackEntity;
 
 import java.util.List;
+import java.util.Set;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -25,4 +27,8 @@ public interface ArtistDao {
 
     @Query("SELECT * FROM artist_table WHERE id = :id")
     ArtistEntity getArtistById(String id);
+
+    @Query("SELECT * FROM artist_table WHERE id IN (:artistIdList)")
+    LiveData <List<ArtistEntity>> getArtistsById(Set<String> artistIdList);
+
 }
