@@ -126,4 +126,8 @@ public class TrackRepository {
         });
     }
 
+    public List<TrackEntity> getTracksById(List<String> trackIds){
+        return trackDao.getTracksById(trackIds);
+    }
+
 }

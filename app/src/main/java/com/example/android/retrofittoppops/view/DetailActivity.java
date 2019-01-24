@@ -17,6 +17,7 @@ import com.example.android.retrofittoppops.controller.SongListRecyclerAdapter;
 import com.example.android.retrofittoppops.model.Album.AlbumAlbum;
 import com.example.android.retrofittoppops.model.Album.AlbumTracksData;
 import com.example.android.retrofittoppops.model.Chart.ChartDataTracks;
+import com.example.android.retrofittoppops.model.TrackArtistHelper;
 import com.example.android.retrofittoppops.rest.ApiClient;
 import com.example.android.retrofittoppops.rest.ApiService;
 import com.example.android.retrofittoppops.utils.Const;
@@ -31,19 +32,22 @@ import retrofit2.Response;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+// TODO implement this for album
+// scope the requirements of this activity
+// start implementation
 public class DetailActivity extends AppCompatActivity {
 
     public static void StartActivity(Activity activity, int id){
         StartActivity(activity, null, id);
     }
-    public static void StartActivity(Activity activity, ChartDataTracks data){
+    public static void StartActivity(Activity activity, TrackArtistHelper data){
         StartActivity(activity, data, -1);
     }
 
-    private static void StartActivity(Activity activity, ChartDataTracks data, int id){
+    private static void StartActivity(Activity activity, TrackArtistHelper data, int id){
         Intent intent = new Intent(activity, DetailActivity.class);
         if(data!= null){
-            intent.putExtra(Const.Extras.TRACK_OBJECT,data);
+//            intent.putExtra(Const.Extras.TRACK_OBJECT,data);
         } else {
             // add id param
         }

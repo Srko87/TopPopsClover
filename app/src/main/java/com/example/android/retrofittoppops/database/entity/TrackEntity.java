@@ -17,7 +17,8 @@ import static androidx.room.ForeignKey.CASCADE;
 
 public class TrackEntity {
 
-
+    // TODO
+    // make id primary key
     private String id;
 
     @NonNull

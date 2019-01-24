@@ -24,6 +24,7 @@ import com.example.android.retrofittoppops.database.entity.TrackEntity;
 import com.example.android.retrofittoppops.model.TrackArtistHelper;
 
 import com.example.android.retrofittoppops.rest.ApiService;
+import com.example.android.retrofittoppops.threading.DefaultExecutorSupplier;
 import com.example.android.retrofittoppops.viewmodel.TracksViewModel;
 
 import java.util.ArrayList;
@@ -106,39 +107,39 @@ public class MainActivity extends AppCompatActivity {
 
             if (chartEntity != null) {
 
-                tracksViewModel.getTracks(chartEntity.getTracks()).observe(this, trackEntities -> {
+                DefaultExecutorSupplier.getInstance().forBackgroundTasks().execute(() -> {
+                    // TODO
+                    // 1 - fetch tracks
+                    // 2 - fetch artists
+                    // 3 - create TrackArtistHelper list and add to adapter
+                    List<TrackEntity> chartTracks = tracksViewModel.getTracksById(chartEntity.getTracks());
+                    // TODO implement get artists list
+//                    List<ArtistEntity> chartArtists = tracksViewModel.getTracksById(chartEntity.getTracks());
+                    List<ArtistEntity> chartArtists = new ArrayList<>();
+                    List<TrackArtistHelper> finalAdapterList = new ArrayList<>();
 
-                    HashSet<String> artistIdList = new HashSet<>();
-                    for (TrackEntity item : trackEntities) {
-                        artistIdList.add(item.getArtistId());
+                    for (TrackEntity track : chartTracks) {
+                        TrackArtistHelper item = new TrackArtistHelper();
+                        item.track = track;
+                        for (ArtistEntity artist : chartArtists) {
+                            if (track.getArtistId().equals(artist.getId())) {
+                                item.artist = artist;
+                                break;
+                            }
+                        }
+                        finalAdapterList.add(item);
                     }
 
-                    tracksViewModel.getArtistsById(artistIdList).observe(this, artistEntities -> {
-
-                        ArrayList<TrackArtistHelper> adapterData = new ArrayList<>();
-                        for (TrackEntity item : trackEntities) {
-                            for (ArtistEntity artistItem : artistEntities) {
-                                if (item.getArtistId().equals(artistItem.getId())) {
-                                    adapterData.add(new TrackArtistHelper(item, artistItem));
-                                }
-                            }
-
-                        }
-                        if (adapterData.size() != 0) {
-                            tvNoData.setVisibility(View.GONE);
-
-
-                            adapterMainRv.updateItems(adapterData);
-                            rvView.setVisibility(View.VISIBLE);
-                        } else {
-                            rvView.setVisibility(View.GONE);
-                            tvNoData.setVisibility(View.VISIBLE);
-                        }
-                    });
-
+                    if (!finalAdapterList.isEmpty()) {
+                        tvNoData.setVisibility(View.GONE);
+                        adapterMainRv.updateItems(finalAdapterList);
+                        rvView.setVisibility(View.VISIBLE);
+                    } else {
+                        rvView.setVisibility(View.GONE);
+                        tvNoData.setVisibility(View.VISIBLE);
+                    }
                 });
             }
-            // TODO add to adapter
         });
 
         pullToRefresh.setOnRefreshListener(() -> {

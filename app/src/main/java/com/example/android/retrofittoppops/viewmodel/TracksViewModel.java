@@ -94,6 +94,10 @@ public class TracksViewModel extends AndroidViewModel {
         // tracks.setValue(results (List<TrackArtistHelper>));
     }
 
+    public List<TrackEntity> getTracksById(List<String> trakIds) {
+        return trackRepository.getTracksById(trakIds);
+    }
+
     public LiveData<List<ArtistEntity>> getArtistsById(Set<String> artistIdSet) {
         return trackRepository.getArtistsById(artistIdSet);
     }
