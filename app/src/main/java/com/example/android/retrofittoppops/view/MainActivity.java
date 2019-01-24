@@ -26,6 +26,7 @@ import com.example.android.retrofittoppops.model.TrackArtistHelper;
 import com.example.android.retrofittoppops.rest.ApiService;
 import com.example.android.retrofittoppops.viewmodel.TracksViewModel;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         adapterMainRv = new ChartAdapter();
         rvView.setAdapter(adapterMainRv);
 
-        // TODO
+        // TODO Vida
         // observe Chart entries for today and fetch today's chart tracks
         // hint observe only today's chart entry
         // why was this removed?
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-        // TODO
+        // TODO Vida
         // 1 - create LiveData that tracks today's row from Chart table (LiveData Chart)
         // 2 - when we get a result from LiveData Chart call ViewModel method fetchChartTracks(LiveData Chart -> Chart.tracksList)
         // 3 - implement Dao query for fetching list of Tracks
@@ -138,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
 
                 });
             }
-            // TODO add to adapter
         });
 
         pullToRefresh.setOnRefreshListener(() -> {
@@ -162,7 +162,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sort_normal: {
-//                  ArrayList<ChartDataTracks> ascendingTracks = new ArrayList<>(adapterMainRv.getData());
+
+
+//                ArrayList<ChartDataTracks> ascendingTracks = new ArrayList<>(adapterMainRv.getData());
 //                Collections.sort(ascendingTracks, (t1, t2) -> t1.getPosition() - t2.getPosition());
 //
 //                adapterMainRv.setDataTracksList(ascendingTracks);

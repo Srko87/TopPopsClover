@@ -104,12 +104,9 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyviewHolder
                 artistName.setText(item.artist.getName());
             }
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //TODO Handle recycler on click
-                    //   DetailActivity.StartActivity((Activity)view.getContext(), item);
-                }
+            itemView.setOnClickListener(view -> {
+                //TODO Handle recycler on click
+//                   DetailActivity.StartActivity((Activity)view.getContext(), item);
             });
         }
     }
