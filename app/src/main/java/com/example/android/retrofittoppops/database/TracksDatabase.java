@@ -18,7 +18,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {AlbumEntity.class, ArtistEntity.class, ChartEntity.class, TrackEntity.class}, version = 9)
+@Database(entities = {AlbumEntity.class, ArtistEntity.class, ChartEntity.class, TrackEntity.class}, version = 10)
 @TypeConverters({DateConverter.class, TrackConverter.class})
 public abstract class TracksDatabase extends RoomDatabase {
 

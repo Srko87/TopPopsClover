@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.example.android.retrofittoppops.R;
 import com.example.android.retrofittoppops.model.TrackArtistHelper;
 import com.example.android.retrofittoppops.utils.Tools;
+import com.example.android.retrofittoppops.view.DetailActivity;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,7 +30,6 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyviewHolder
         data.addAll(list);
         notifyDataSetChanged();
     }
-
 
     @NonNull
     @Override
@@ -50,7 +51,6 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyviewHolder
     public int getItemViewType(int position) {
         return super.getItemViewType(position);
     }
-
 
     public class MyviewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.song_position_tv)
@@ -80,13 +80,7 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyviewHolder
             }
 
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //TODO Handle recycler on click
-//                       DetailActivity.StartActivity((Activity)view.getContext(), item);
-                }
-            });
+            itemView.setOnClickListener(view -> DetailActivity.StartActivity((Activity) view.getContext(), item.track.getTitle(), item.track.getAlbumId()));
         }
     }
 

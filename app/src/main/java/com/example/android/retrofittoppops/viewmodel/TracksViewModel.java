@@ -72,9 +72,9 @@ public class TracksViewModel extends AndroidViewModel {
         return chartRepository.getChartLiveData();
     }
 
-    public LiveData<List<TrackEntity>> getTracks(List<String> tracksId) {
-        return trackRepository.getLastTracksById(tracksId);
-    }
+//    public LiveData<List<TrackEntity>> getTracks(List<String> tracksId) {
+//        return trackRepository.getLastTracksById(tracksId);
+//    }
 
     public List<TrackEntity> getTracksById(List<String> trackIds) {
         return trackRepository.getTracksById(trackIds);

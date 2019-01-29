@@ -1,5 +1,7 @@
 package com.example.android.retrofittoppops.database.entity;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -8,7 +10,7 @@ import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "album_table", foreignKeys =  @ForeignKey(entity = ArtistEntity.class, parentColumns = "id",
+@Entity(tableName = "album_table", foreignKeys = @ForeignKey(entity = ArtistEntity.class, parentColumns = "id",
         childColumns = "artistId", onDelete = CASCADE), indices = {@Index("artistId")})
 public class AlbumEntity {
 
@@ -19,6 +21,12 @@ public class AlbumEntity {
     private String name;
 
     private String artistId;
+
+    private String artistName;
+
+    private String cover;
+
+    private List<String> trackList;
 
     @NonNull
     public String getId() {
@@ -43,5 +51,29 @@ public class AlbumEntity {
 
     public void setArtistId(String artistId) {
         this.artistId = artistId;
+    }
+
+    public String getArtistName() {
+        return artistName;
+    }
+
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public List<String> getTrackList() {
+        return trackList;
+    }
+
+    public void setTrackList(List<String> trackList) {
+        this.trackList = trackList;
     }
 }
