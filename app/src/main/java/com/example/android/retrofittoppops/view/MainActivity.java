@@ -116,31 +116,21 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    //TODO Menu items
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sort_normal: {
-//                ArrayList<ChartDataTracks> ascendingTracks = new ArrayList<>(adapterMainRv.getData());
-//                Collections.sort(ascendingTracks, (t1, t2) -> t1.getPosition() - t2.getPosition());
-//
-//                adapterMainRv.setDataTracksList(ascendingTracks);
+                adapterMainRv.sortByPosition();
                 Toast.makeText(getApplicationContext(), "Sorted as retrieved from API!", Toast.LENGTH_SHORT).show();
                 break;
             }
             case R.id.sort_ascending: {
-//                ArrayList<ChartDataTracks> ascendingTracks = new ArrayList<>(adapterMainRv.getData());
-//                Collections.sort(ascendingTracks, (t1, t2) -> t1.getDuration() - t2.getDuration());
-//
-//                adapterMainRv.setDataTracksList(ascendingTracks);
+                adapterMainRv.sortByDurationAsc();
                 Toast.makeText(getApplicationContext(), "Sorted ascending by track duration!", Toast.LENGTH_SHORT).show();
                 break;
             }
             case R.id.sort_descending: {
-//                ArrayList<ChartDataTracks> descendingTracks = new ArrayList<>(adapterMainRv.getData());
-//                Collections.sort(descendingTracks, (t1, t2) -> t2.getDuration() - t1.getDuration());
-//
-//                adapterMainRv.setDataTracksList(descendingTracks);
+                adapterMainRv.sortByDurationDesc();
                 Toast.makeText(getApplicationContext(), "Sorted descending by track duration!", Toast.LENGTH_SHORT).show();
                 break;
             }

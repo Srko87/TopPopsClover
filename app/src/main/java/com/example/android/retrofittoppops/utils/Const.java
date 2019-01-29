@@ -3,7 +3,6 @@ package com.example.android.retrofittoppops.utils;
 public class Const {
 
     public static class Extras {
-        public static final String TRACK_OBJECT = "trackObject";
         public static final String TRACK_NAME = "trackName";
         public static final String ALBUM_ID = "albumId";
 

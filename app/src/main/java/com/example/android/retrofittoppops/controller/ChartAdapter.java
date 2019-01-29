@@ -2,6 +2,8 @@ package com.example.android.retrofittoppops.controller;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -28,6 +30,20 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.MyviewHolder
     public void updateItems(List<TrackArtistHelper> list) {
         data.clear();
         data.addAll(list);
+        notifyDataSetChanged();
+    }
+    public void sortByPosition() {
+        Collections.sort(data,(t1, t2) -> t1.track.getPosition() - t2.track.getPosition());
+        notifyDataSetChanged();
+    }
+
+    public void sortByDurationAsc() {
+        Collections.sort(data,(t1, t2) -> t1.track.getDuration() - t2.track.getDuration());
+        notifyDataSetChanged();
+    }
+
+    public void sortByDurationDesc() {
+        Collections.sort(data ,(t1, t2) -> t2.track.getDuration() - t1.track.getDuration());
         notifyDataSetChanged();
     }
 
