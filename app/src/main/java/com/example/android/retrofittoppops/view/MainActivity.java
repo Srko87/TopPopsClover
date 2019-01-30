@@ -1,6 +1,5 @@
 package com.example.android.retrofittoppops.view;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,12 +24,10 @@ import com.example.android.retrofittoppops.database.entity.ArtistEntity;
 import com.example.android.retrofittoppops.database.entity.TrackEntity;
 import com.example.android.retrofittoppops.model.TrackArtistHelper;
 
-import com.example.android.retrofittoppops.rest.ApiService;
 import com.example.android.retrofittoppops.threading.DefaultExecutorSupplier;
 import com.example.android.retrofittoppops.viewmodel.TracksViewModel;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 
@@ -51,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     private ChartAdapter adapterMainRv;
     private TracksViewModel tracksViewModel;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,59 +63,18 @@ public class MainActivity extends AppCompatActivity {
         adapterMainRv = new ChartAdapter();
         rvView.setAdapter(adapterMainRv);
 
-        // TODO
-        // observe Chart entries for today and fetch today's chart tracks
-        // hint observe only today's chart entry
-        // why was this removed?
-        // today's chart is displayed here that is the table that needs to be observed, todays chart entry
-//        tracksViewModel.getArtistLiveData().observe(this, data -> {
-//            if (data != null) {
-//                adapterMainRv.updateArtist(data);
-//            }
-//        });
-//        tracksViewModel.getLastChartLiveData().observe(this, data -> {
-//            if (data != null) {
-//                tracksViewModel.getTrackHelper(data.getTracks());
-//            }
-//        });
-//        tracksViewModel.getAllTracks().observe(this, data -> {
-//            if (data != null && data.size() != 0) {
-//                tvNoData.setVisibility(View.GONE);
-//
-//                List<TrackArtistHelper> adapterData = new ArrayList<>();
-//
-//                for (TrackEntity item : data) {
-//                    adapterData.add(new TrackArtistHelper(item));
-//                }
-//
-//                adapterMainRv.updateItems(adapterData);
-//                rvView.setVisibility(View.VISIBLE);
-//            } else {
-//                rvView.setVisibility(View.GONE);
-//                tvNoData.setVisibility(View.VISIBLE);
-//            }
-//        });
-
-        // TODO
-        // 1 - create LiveData that tracks today's row from Chart table (LiveData Chart)
-        // 2 - when we get a result from LiveData Chart call ViewModel method fetchChartTracks(LiveData Chart -> Chart.tracksList)
-        // 3 - implement Dao query for fetching list of Tracks
-        // 4 - create MutableLiveData in ViewModel that returns List<Track> and is triggered from query in step 3
-        tracksViewModel.getLastChartLiveData().observe(this, chartEntity -> {
+        tracksViewModel.getChartLiveData().observe(this, chartEntity -> {
 
             if (chartEntity != null) {
-
                 DefaultExecutorSupplier.getInstance().forBackgroundTasks().execute(() -> {
-                    // TODO
-                    // 1 - fetch tracks
-                    // 2 - fetch artists
-                    // 3 - create TrackArtistHelper list and add to adapter
-                    List<TrackEntity> chartTracks = tracksViewModel.getTracksById(chartEntity.getTracks());
-                    // TODO implement get artists list
-//                    List<ArtistEntity> chartArtists = tracksViewModel.getTracksById(chartEntity.getTracks());
-                    List<ArtistEntity> chartArtists = new ArrayList<>();
-                    List<TrackArtistHelper> finalAdapterList = new ArrayList<>();
 
+                    List<TrackEntity> chartTracks = tracksViewModel.getTracksById(chartEntity.getTracks());
+                    List<String> artistIds = new ArrayList<>();
+                    for (TrackEntity item : chartTracks) {
+                        artistIds.add(item.getArtistId());
+                    }
+                    List<ArtistEntity> chartArtists = tracksViewModel.getArtistsById(artistIds);
+                    List<TrackArtistHelper> finalAdapterList = new ArrayList<>();
                     for (TrackEntity track : chartTracks) {
                         TrackArtistHelper item = new TrackArtistHelper();
                         item.track = track;
@@ -129,23 +86,25 @@ public class MainActivity extends AppCompatActivity {
                         }
                         finalAdapterList.add(item);
                     }
+                    Handler mainHandler = new Handler(Looper.getMainLooper());
 
-                    if (!finalAdapterList.isEmpty()) {
-                        tvNoData.setVisibility(View.GONE);
-                        adapterMainRv.updateItems(finalAdapterList);
-                        rvView.setVisibility(View.VISIBLE);
-                    } else {
-                        rvView.setVisibility(View.GONE);
-                        tvNoData.setVisibility(View.VISIBLE);
-                    }
+                    Runnable myRunnable = () -> {
+                        if (!finalAdapterList.isEmpty()) {
+                            tvNoData.setVisibility(View.GONE);
+                            adapterMainRv.updateItems(finalAdapterList);
+                            rvView.setVisibility(View.VISIBLE);
+                        } else {
+                            rvView.setVisibility(View.GONE);
+                            tvNoData.setVisibility(View.VISIBLE);
+                        }
+                    };
+                    mainHandler.post(myRunnable);
                 });
             }
         });
 
         pullToRefresh.setOnRefreshListener(() -> {
-
             tracksViewModel.fetchCharts();
-
             Toast.makeText(getApplicationContext(), "List refreshed", Toast.LENGTH_SHORT).show();
             pullToRefresh.setRefreshing(false);
         });
@@ -157,32 +116,21 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    //TODO Menu items
-    // dev new todo
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sort_normal: {
-//                  ArrayList<ChartDataTracks> ascendingTracks = new ArrayList<>(adapterMainRv.getData());
-//                Collections.sort(ascendingTracks, (t1, t2) -> t1.getPosition() - t2.getPosition());
-//
-//                adapterMainRv.setDataTracksList(ascendingTracks);
+                adapterMainRv.sortByPosition();
                 Toast.makeText(getApplicationContext(), "Sorted as retrieved from API!", Toast.LENGTH_SHORT).show();
                 break;
             }
             case R.id.sort_ascending: {
-//                ArrayList<ChartDataTracks> ascendingTracks = new ArrayList<>(adapterMainRv.getData());
-//                Collections.sort(ascendingTracks, (t1, t2) -> t1.getDuration() - t2.getDuration());
-//
-//                adapterMainRv.setDataTracksList(ascendingTracks);
+                adapterMainRv.sortByDurationAsc();
                 Toast.makeText(getApplicationContext(), "Sorted ascending by track duration!", Toast.LENGTH_SHORT).show();
                 break;
             }
             case R.id.sort_descending: {
-//                ArrayList<ChartDataTracks> descendingTracks = new ArrayList<>(adapterMainRv.getData());
-//                Collections.sort(descendingTracks, (t1, t2) -> t2.getDuration() - t1.getDuration());
-//
-//                adapterMainRv.setDataTracksList(descendingTracks);
+                adapterMainRv.sortByDurationDesc();
                 Toast.makeText(getApplicationContext(), "Sorted descending by track duration!", Toast.LENGTH_SHORT).show();
                 break;
             }

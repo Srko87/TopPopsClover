@@ -16,6 +16,6 @@ public interface ApiService {
     Single<ChartTopPops> getTopPops();
 
     @GET("album/{album_id}")
-    Call<AlbumAlbum> getAlbum(@Path("album_id") String album_id);
+    Single<AlbumAlbum> getAlbum(@Path("album_id") String album_id);
 
 }

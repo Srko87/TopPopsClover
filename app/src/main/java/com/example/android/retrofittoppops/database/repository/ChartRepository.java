@@ -5,7 +5,6 @@ import android.app.Application;
 import com.example.android.retrofittoppops.database.TracksDatabase;
 import com.example.android.retrofittoppops.database.dao.ChartDao;
 import com.example.android.retrofittoppops.database.entity.ChartEntity;
-import com.example.android.retrofittoppops.database.entity.TrackEntity;
 import com.example.android.retrofittoppops.database.utils.DateCompare;
 import com.example.android.retrofittoppops.model.Chart.ChartDataTracks;
 import com.example.android.retrofittoppops.threading.DefaultExecutorSupplier;
@@ -17,8 +16,6 @@ import java.util.List;
 
 import androidx.lifecycle.LiveData;
 
-// TODO Vida
-// checkout optimised/refactored code
 public class ChartRepository {
 
     private ChartDao chartDao;
@@ -57,8 +54,8 @@ public class ChartRepository {
         });
     }
 
-    public LiveData<ChartEntity> getLastChartLiveData() {
-        return chartDao.getMostRecentChartLiveData();
+    public LiveData<ChartEntity> getChartLiveData() {
+        return chartDao.getChartLiveData();
     }
 
     private void insertChart(ChartEntity chartEntity) {

@@ -29,9 +29,6 @@ public interface TrackDao {
     @Query("SELECT * FROM tracks_table WHERE id IN (:trackIdList)")
     LiveData<List<TrackEntity>> getLastTracksById(List<String> trackIdList);
 
-    // TODO track order needs to be valid, chart order from top to bottom
-    // check track order
-    // sort by position
-    @Query("SELECT * FROM tracks_table WHERE id IN (:trackIdList)")
+    @Query("SELECT * FROM tracks_table WHERE id IN (:trackIdList) ORDER BY position ASC")
     List<TrackEntity> getTracksById(List<String> trackIdList);
 }

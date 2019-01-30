@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class AlbumAlbum implements Serializable {
 
     @SerializedName("id")
-    private Integer id;
+    private String id;
     @SerializedName("title")
     private String title;
     @SerializedName("upc")
@@ -61,7 +61,7 @@ public class AlbumAlbum implements Serializable {
     @SerializedName("tracks")
     private AlbumTracksAlbum tracks;
 
-    public AlbumAlbum(Integer id, String title, String upc, String link, String share, String cover, String coverSmall, String coverMedium, String coverBig, String coverXl, Integer genreId, AlbumGenres albumGenres, String label, Integer nbTracks, Integer duration, Integer fans, Integer rating, String releaseDate, String recordType, Boolean available, String tracklist, Boolean explicitLyrics, AlbumArtist albumArtist, String type, AlbumTracksAlbum tracks) {
+    public AlbumAlbum(String id, String title, String upc, String link, String share, String cover, String coverSmall, String coverMedium, String coverBig, String coverXl, Integer genreId, AlbumGenres albumGenres, String label, Integer nbTracks, Integer duration, Integer fans, Integer rating, String releaseDate, String recordType, Boolean available, String tracklist, Boolean explicitLyrics, AlbumArtist albumArtist, String type, AlbumTracksAlbum tracks) {
         this.id = id;
         this.title = title;
         this.upc = upc;
@@ -89,11 +89,11 @@ public class AlbumAlbum implements Serializable {
         this.tracks = tracks;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

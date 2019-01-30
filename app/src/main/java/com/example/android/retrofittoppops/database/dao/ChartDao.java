@@ -19,7 +19,7 @@ public interface ChartDao {
     ChartEntity getMostRecentChart();
 
     @Query("SELECT * FROM chart_table ORDER BY id DESC LIMIT 1")
-    LiveData<ChartEntity> getMostRecentChartLiveData();
+    LiveData<ChartEntity> getChartLiveData();
 
     @Query("UPDATE chart_table SET modifiedAt = :date, tracks = :trackList WHERE id = :id")
     void updateChart(Date date, String trackList, int id);

@@ -12,18 +12,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.android.retrofittoppops.R;
-import com.example.android.retrofittoppops.model.Album.AlbumTracksData;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class SongListRecyclerAdapter extends RecyclerView.Adapter<SongListRecyclerAdapter.MyViewHolder> {
 
     Context context;
-    ArrayList<AlbumTracksData> albumTracksDataArrayList;
+    List<String> albumTracklist;
 
-    public SongListRecyclerAdapter(Context context, ArrayList<AlbumTracksData> albumTracksDataArrayList) {
+    public SongListRecyclerAdapter(Context context, List<String> albumTracklist) {
         this.context = context;
-        this.albumTracksDataArrayList = albumTracksDataArrayList;
+        this.albumTracklist = albumTracklist;
     }
 
     @Override
@@ -34,19 +33,19 @@ public class SongListRecyclerAdapter extends RecyclerView.Adapter<SongListRecycl
 
     @Override
     public void onBindViewHolder(SongListRecyclerAdapter.MyViewHolder myViewHolder, int position) {
-        myViewHolder.songName.setText(albumTracksDataArrayList.get(position).getTitle());
+        myViewHolder.songName.setText(albumTracklist.get(position));
     }
 
     @Override
     public int getItemCount() {
-        if (albumTracksDataArrayList != null) {
-            return albumTracksDataArrayList.size();
+        if (albumTracklist != null) {
+            return albumTracklist.size();
         }
         return 0;
     }
 
-    public void setAlbumTracksDataArrayList(ArrayList<AlbumTracksData> albumTracksDataArrayList) {
-        this.albumTracksDataArrayList = albumTracksDataArrayList;
+    public void setAlbumTracklist(List<String> albumTracklist) {
+        this.albumTracklist = albumTracklist;
         notifyDataSetChanged();
     }
 

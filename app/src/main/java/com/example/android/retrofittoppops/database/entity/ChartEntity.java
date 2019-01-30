@@ -25,7 +25,6 @@ public class ChartEntity {
     @TypeConverters(TrackConverter.class)
     private List<String> tracks;
 
-
     @NonNull
     public Integer getId() {
         return id;

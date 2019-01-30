@@ -11,9 +11,7 @@ public class ArtistEntity {
     @NonNull
     @PrimaryKey
     private String id;
-
     private String name;
-
     @NonNull
     public String getId() {
         return id;

@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 8,
-    "identityHash": "9893838896ef762caf308eb5c3e11fc4",
+    "version": 10,
+    "identityHash": "d3456a7a2ad7b839ac0b807afc07bf2b",
     "entities": [
       {
         "tableName": "album_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `artistId` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`artistId`) REFERENCES `artist_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `artistId` TEXT, `artistName` TEXT, `cover` TEXT, `trackList` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`artistId`) REFERENCES `artist_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -23,6 +23,24 @@
           {
             "fieldPath": "artistId",
             "columnName": "artistId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "artistName",
+            "columnName": "artistName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cover",
+            "columnName": "cover",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "trackList",
+            "columnName": "trackList",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -215,7 +233,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"9893838896ef762caf308eb5c3e11fc4\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"d3456a7a2ad7b839ac0b807afc07bf2b\")"
     ]
   }
 }

@@ -1,7 +1,6 @@
 package com.example.android.retrofittoppops.database.repository;
 
 import android.app.Application;
-import android.os.AsyncTask;
 
 import com.example.android.retrofittoppops.database.TracksDatabase;
 import com.example.android.retrofittoppops.database.dao.AlbumDao;
@@ -15,7 +14,6 @@ import com.example.android.retrofittoppops.threading.DefaultExecutorSupplier;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import androidx.lifecycle.LiveData;
 
@@ -34,11 +32,6 @@ public class TrackRepository {
         albumDao = db.albumDao();
         artistDao = db.artistDao();
     }
-
-    public LiveData<List<TrackEntity>> getAllTracks() {
-        return trackDao.getAllTracks();
-    }
-
 
     public void insertAllTracks(List<ChartDataTracks> chartDataTracksList) {
         DefaultExecutorSupplier.getInstance().forBackgroundTasks().execute(() -> {
@@ -86,48 +79,16 @@ public class TrackRepository {
         });
     }
 
-    public interface AsyncResponse{
-        void queryFinish(ArtistEntity artistEntity, int position);
-    }
-
-    // TODO Vida
-    // replace with Executor, no Async tasks, all threading needs to be done with executers
-    // try implementing this without position in method
-
-    public interface ArtistResponse {
-        void onQueryFinish (ArtistEntity artistEntity);
-    }
-
-    public void getArtistById(String id, ArtistResponse listener) {
-        DefaultExecutorSupplier.getInstance().forBackgroundTasks().execute(() -> {
-            if (listener != null) {
-                listener.onQueryFinish(artistDao.getArtistById(id));
-            }
-        });
-    }
-
     public LiveData<List<TrackEntity>> getLastTracksById(List<String> trackIdList) {
         return trackDao.getLastTracksById(trackIdList);
     }
 
-    public LiveData<List<ArtistEntity>> getArtistsById(Set<String> artistIdList) {
-        return artistDao.getArtistsById(artistIdList);
-    }
-
-    public interface TrackResponse {
-        void onQueryFinish(TrackEntity trackEntity);
-    }
-
-    public void getTrackById(String id, TrackResponse listener) {
-        DefaultExecutorSupplier.getInstance().forBackgroundTasks().execute(() -> {
-            if (listener != null) {
-                listener.onQueryFinish(trackDao.getTrackById(id));
-            }
-        });
-    }
-
     public List<TrackEntity> getTracksById(List<String> trackIds){
         return trackDao.getTracksById(trackIds);
+    }
+
+    public List<ArtistEntity> getArtistsById(List<String> artistIds) {
+        return artistDao.getArtistsById(artistIds);
     }
 
 }
