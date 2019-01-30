@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                     for (TrackEntity item : chartTracks) {
                         artistIds.add(item.getArtistId());
                     }
+
                     List<ArtistEntity> chartArtists = tracksViewModel.getArtistsById(artistIds);
                     List<TrackArtistHelper> finalAdapterList = new ArrayList<>();
                     for (TrackEntity track : chartTracks) {
@@ -86,9 +87,10 @@ public class MainActivity extends AppCompatActivity {
                         }
                         finalAdapterList.add(item);
                     }
-                    Handler mainHandler = new Handler(Looper.getMainLooper());
 
-                    Runnable myRunnable = () -> {
+                    // TODO use main thread from DefaultExecuters
+                    // check out
+                    DefaultExecutorSupplier.getInstance().forMainThreadTasks().execute(() -> {
                         if (!finalAdapterList.isEmpty()) {
                             tvNoData.setVisibility(View.GONE);
                             adapterMainRv.updateItems(finalAdapterList);
@@ -97,8 +99,7 @@ public class MainActivity extends AppCompatActivity {
                             rvView.setVisibility(View.GONE);
                             tvNoData.setVisibility(View.VISIBLE);
                         }
-                    };
-                    mainHandler.post(myRunnable);
+                    });
                 });
             }
         });

@@ -1,11 +1,5 @@
 package com.example.android.retrofittoppops.controller;
 
-import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,49 +7,58 @@ import android.widget.TextView;
 
 import com.example.android.retrofittoppops.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+// TODO check code
 public class SongListRecyclerAdapter extends RecyclerView.Adapter<SongListRecyclerAdapter.MyViewHolder> {
 
-    Context context;
-    List<String> albumTracklist;
+    private List<String> data = new ArrayList<>();
 
-    public SongListRecyclerAdapter(Context context, List<String> albumTracklist) {
-        this.context = context;
-        this.albumTracklist = albumTracklist;
+    public SongListRecyclerAdapter() {
+    }
+
+    public void setData(List<String> newData) {
+        if (newData != null && !newData.isEmpty()) {
+            data.clear();
+            data.addAll(newData);
+            notifyDataSetChanged();
+        }
     }
 
     @Override
     public SongListRecyclerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_detail_rv_row, parent, false);
-        return new MyViewHolder(view);
+        return new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_detail_rv_row, parent, false));
     }
 
     @Override
     public void onBindViewHolder(SongListRecyclerAdapter.MyViewHolder myViewHolder, int position) {
-        myViewHolder.songName.setText(albumTracklist.get(position));
+        myViewHolder.bindView(position);
     }
 
     @Override
     public int getItemCount() {
-        if (albumTracklist != null) {
-            return albumTracklist.size();
-        }
-        return 0;
+        return data.size();
     }
 
-    public void setAlbumTracklist(List<String> albumTracklist) {
-        this.albumTracklist = albumTracklist;
-        notifyDataSetChanged();
-    }
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.detail_song_name_row)
+        TextView songName;
 
-        @BindView(R.id.detail_song_name_row) TextView songName;
-
-        public MyViewHolder(@NonNull View itemView) {
+        MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        void bindView(int position) {
+            String item = data.get(position);
+            songName.setText(item);
         }
     }
 }

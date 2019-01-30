@@ -3,13 +3,7 @@ package com.example.android.retrofittoppops.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,11 +11,15 @@ import android.widget.Toast;
 import com.example.android.retrofittoppops.R;
 import com.example.android.retrofittoppops.controller.SongListRecyclerAdapter;
 import com.example.android.retrofittoppops.database.entity.AlbumEntity;
-
 import com.example.android.retrofittoppops.utils.Const;
 import com.example.android.retrofittoppops.viewmodel.DetailViewModel;
 import com.squareup.picasso.Picasso;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -34,7 +32,7 @@ public class DetailActivity extends AppCompatActivity {
         activity.startActivity(intent);
     }
 
-    SongListRecyclerAdapter recyclerAdapter;
+    SongListRecyclerAdapter adapter;
     private DetailViewModel detailViewModel;
 
     @BindView(R.id.song_list_rv)
@@ -62,28 +60,40 @@ public class DetailActivity extends AppCompatActivity {
 
         String albumId = intent.getStringExtra(Const.Extras.ALBUM_ID);
         trackName = intent.getStringExtra(Const.Extras.TRACK_NAME);
+        songName.setText(String.format(getString(R.string.song_name_detail), trackName));
 
         detailViewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        detailViewModel.getAlbumLiveData(albumId).observe(this, albumEntity -> {
+        adapter = new SongListRecyclerAdapter();
+        recyclerView.setAdapter(adapter);
 
-            if (albumEntity.getTrackList() == null || albumEntity.getCover() == null) {
-                detailViewModel.fetchAlbumFromApi(albumId);
+        detailViewModel.getAlbumLiveData(albumId).observe(this, albumEntity -> {
+            // TODO circular dependancy
+            if (albumEntity != null) {
+                // TODO does not need to be initialize every time
+                // check code logic
                 displayAlbumDescription(albumEntity);
-            } else {
-                displayAlbumDescription(albumEntity);
-                recyclerAdapter = new SongListRecyclerAdapter(this, albumEntity.getTrackList());
-                recyclerView.setAdapter(recyclerAdapter);
+                adapter.setData(albumEntity.getTrackList());
             }
         });
+
+        // TODO call api onCreate of Activity
+        // this will avoid circular calls
+        detailViewModel.fetchAlbumFromApi(albumId);
     }
 
+    // TODO show data right away
+    // do not show null
     private void displayAlbumDescription(AlbumEntity albumEntity) {
-        songName.setText(String.format(getString(R.string.song_name_detail),trackName));
-        albumName.setText(String.format(getString(R.string.album_name_detail), albumEntity.getName()));
-        artistName.setText(String.format(getString(R.string.artist_name_detail), albumEntity.getArtistName()));
+        if (!TextUtils.isEmpty(albumEntity.getName())) {
+            albumName.setText(String.format(getString(R.string.album_name_detail), albumEntity.getName()));
+        }
+        if (!TextUtils.isEmpty(albumEntity.getArtistName())) {
+            artistName.setText(String.format(getString(R.string.artist_name_detail), albumEntity.getArtistName()));
+        }
         Picasso.get().load(albumEntity.getCover()).into(albumCover);
     }
 

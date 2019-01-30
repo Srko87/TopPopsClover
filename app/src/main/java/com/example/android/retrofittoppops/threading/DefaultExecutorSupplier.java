@@ -12,7 +12,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class DefaultExecutorSupplier {
 
     // number of cores for number of threads
-    public static final int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
+    private static final int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
 
     private final ThreadPoolExecutor forBackgroundTasks;
 
@@ -57,9 +57,15 @@ public class DefaultExecutorSupplier {
         mainThreadExecutor = new MainThreadExecutor();
     }
 
-    public ThreadPoolExecutor forBackgroundTasks() { return forBackgroundTasks; }
+    public ThreadPoolExecutor forBackgroundTasks() {
+        return forBackgroundTasks;
+    }
 
-    public ThreadPoolExecutor forLightWeightBackgroundTasks() { return forLightWeightBackgroundTasks; }
+    public ThreadPoolExecutor forLightWeightBackgroundTasks() {
+        return forLightWeightBackgroundTasks;
+    }
 
-    public Executor forMainThreadTasks() { return mainThreadExecutor; }
+    public Executor forMainThreadTasks() {
+        return mainThreadExecutor;
+    }
 }
