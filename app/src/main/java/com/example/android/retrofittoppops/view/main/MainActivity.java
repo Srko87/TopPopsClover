@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         rvView.setLayoutManager(layoutManager);
         adapterMainRv = new MainChartAdapter();
         rvView.setAdapter(adapterMainRv);
+
         mainViewModel.fetchCharts();
 
         mainViewModel.onError().observe(this, errorMessage -> {
@@ -62,9 +63,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mainViewModel.getChartLiveData().observe(this, chartEntity -> {
-
             if (chartEntity != null) {
-                Toast.makeText(getApplicationContext(), "List refreshed", Toast.LENGTH_LONG).show();
                 DefaultExecutorSupplier.getInstance().forBackgroundTasks().execute(() -> {
 
                     List<TrackEntity> chartTracks = mainViewModel.getTracksById(chartEntity.getTracks());

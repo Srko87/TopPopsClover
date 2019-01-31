@@ -47,7 +47,7 @@ public class DetailViewModel extends AndroidViewModel {
                 .subscribe(response -> {
                     updateAlbum(response.getAlbumArtist().getName(), response.getCover(), response.getTracks().getAlbumTracksData(), response.getId());
                 }, error -> {
-
+                    errorLiveData.setValue(error.getLocalizedMessage());
                 }));
     }
 
