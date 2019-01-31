@@ -1,4 +1,4 @@
-package com.example.android.retrofittoppops.controller;
+package com.example.android.retrofittoppops.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +16,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 // TODO check code
-public class SongListRecyclerAdapter extends RecyclerView.Adapter<SongListRecyclerAdapter.MyViewHolder> {
+public class DetailTrackAdapter extends RecyclerView.Adapter<DetailTrackAdapter.MyViewHolder> {
 
     private List<String> data = new ArrayList<>();
 
-    public SongListRecyclerAdapter() {
+    public DetailTrackAdapter() {
     }
 
     public void setData(List<String> newData) {
@@ -32,12 +32,12 @@ public class SongListRecyclerAdapter extends RecyclerView.Adapter<SongListRecycl
     }
 
     @Override
-    public SongListRecyclerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DetailTrackAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_detail_rv_row, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(SongListRecyclerAdapter.MyViewHolder myViewHolder, int position) {
+    public void onBindViewHolder(DetailTrackAdapter.MyViewHolder myViewHolder, int position) {
         myViewHolder.bindView(position);
     }
 

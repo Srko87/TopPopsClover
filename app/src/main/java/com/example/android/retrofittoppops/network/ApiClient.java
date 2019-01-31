@@ -1,4 +1,4 @@
-package com.example.android.retrofittoppops.rest;
+package com.example.android.retrofittoppops.network;
 
 
 import okhttp3.OkHttpClient;

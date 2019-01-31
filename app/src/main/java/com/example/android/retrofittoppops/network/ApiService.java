@@ -1,12 +1,10 @@
-package com.example.android.retrofittoppops.rest;
+package com.example.android.retrofittoppops.network;
 
 import com.example.android.retrofittoppops.model.Album.AlbumAlbum;
 import com.example.android.retrofittoppops.model.Chart.ChartTopPops;
 
 
-import io.reactivex.Observable;
 import io.reactivex.Single;
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
