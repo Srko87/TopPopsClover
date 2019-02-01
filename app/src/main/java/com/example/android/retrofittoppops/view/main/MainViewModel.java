@@ -23,20 +23,21 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-
 public class MainViewModel extends AndroidViewModel {
 
+    private ApiService apiService;
     private TrackRepository trackRepository;
     private ChartRepository chartRepository;
     private CompositeDisposable disposables = new CompositeDisposable();
     private MutableLiveData<List<TrackArtistHelper>> tracks = new MutableLiveData<>();
+    // TODO
+    // can we maybe create a BaseViewModel that has error handling in
+    // in that case we can reuse the same code across the different ViewModels
     private MutableLiveData<String> errorLiveData = new MutableLiveData<>();
-    public MutableLiveData<List<TrackArtistHelper>> getTracks() {
-        return tracks;
-    }
 
     public MainViewModel(@NonNull Application application) {
         super(application);
+        apiService = ApiClient.getClient().create(ApiService.class);
         trackRepository = new TrackRepository(application);
         chartRepository = new ChartRepository(application);
     }
@@ -45,22 +46,17 @@ public class MainViewModel extends AndroidViewModel {
         trackRepository.insertAllTracks(chartDataTracksList);
     }
 
-    private void insertOrUpdateChart(Date date, List<ChartDataTracks> chartDataTracksList) {
-        chartRepository.insertOrUpdateChart(date, chartDataTracksList);
+    public MutableLiveData<List<TrackArtistHelper>> getTracks() {
+        return tracks;
     }
 
-
-
     void fetchCharts() {
-
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
-
         disposables.add(apiService.getTopPops()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                     insertTracks(response.getChartTracks().getChartDataTracksList());
-                    insertOrUpdateChart(new Date(), response.getChartTracks().getChartDataTracksList());
+                    chartRepository.insertOrUpdateChart(new Date(), response.getChartTracks().getChartDataTracksList());
                 }, error -> {
                     errorLiveData.setValue(error.getLocalizedMessage());
                 }));
@@ -78,13 +74,13 @@ public class MainViewModel extends AndroidViewModel {
         return trackRepository.getArtistsById(artistIds);
     }
 
+    LiveData<String> onError() {
+        return errorLiveData;
+    }
+
     @Override
     protected void onCleared() {
         super.onCleared();
         disposables.clear();
-    }
-
-    LiveData<String> onError() {
-        return errorLiveData;
     }
 }

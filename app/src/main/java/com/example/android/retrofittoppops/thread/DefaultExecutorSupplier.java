@@ -8,7 +8,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.LinkedBlockingQueue;
 
-
 public class DefaultExecutorSupplier {
 
     // number of cores for number of threads

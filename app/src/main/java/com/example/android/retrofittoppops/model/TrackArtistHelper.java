@@ -8,14 +8,17 @@ public class TrackArtistHelper {
     public TrackEntity track;
     public ArtistEntity artist = null;
 
-    public TrackArtistHelper(TrackEntity track) {this.track = track; }
+    public TrackArtistHelper(TrackEntity track) {
+        this.track = track;
+    }
 
     public TrackArtistHelper(TrackEntity track, ArtistEntity artist) {
         this.track = track;
         this.artist = artist;
     }
 
-    public TrackArtistHelper () {}
+    public TrackArtistHelper() {
+    }
 
     public void setArtist(ArtistEntity artist) {
         this.artist = artist;

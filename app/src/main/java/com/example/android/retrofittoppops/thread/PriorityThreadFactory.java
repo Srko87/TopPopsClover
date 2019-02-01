@@ -8,21 +8,18 @@ public class PriorityThreadFactory implements ThreadFactory {
 
     private final int threadPriority;
 
-    public PriorityThreadFactory(int threadPriority) {
+    PriorityThreadFactory(int threadPriority) {
         this.threadPriority = threadPriority;
     }
 
     @Override
-    public Thread newThread(Runnable r) {
-        Runnable wrapperRunnable = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Process.setThreadPriority(threadPriority);
-                } catch (Throwable t) {
-
-                }
-                r.run();
+    public Thread newThread(Runnable runnable) {
+        Runnable wrapperRunnable = () -> {
+            try {
+                Process.setThreadPriority(threadPriority);
+                runnable.run();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
             }
         };
 

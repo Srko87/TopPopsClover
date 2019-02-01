@@ -59,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
         mainViewModel.fetchCharts();
 
         mainViewModel.onError().observe(this, errorMessage -> {
+            // TODO
+            // only one type of error is shown here
+            // implement other error types
             Toast.makeText(this, "No internet, please try again", Toast.LENGTH_SHORT).show();
         });
 
@@ -131,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
             case R.id.delete_all: {
+                // TODO
+                // this needs to be in ViewModel and DatabaseRepository
                 DefaultExecutorSupplier.getInstance().forBackgroundTasks().execute(() -> {
                     TracksDatabase.clearDB(getApplicationContext());
                 });
