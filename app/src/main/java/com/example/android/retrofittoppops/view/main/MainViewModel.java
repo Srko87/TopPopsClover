@@ -49,8 +49,6 @@ public class MainViewModel extends AndroidViewModel {
         chartRepository.insertOrUpdateChart(date, chartDataTracksList);
     }
 
-
-
     void fetchCharts() {
 
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
