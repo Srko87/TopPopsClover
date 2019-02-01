@@ -1,4 +1,4 @@
-package com.example.android.retrofittoppops.database.repository;
+package com.example.android.retrofittoppops.repository;
 
 import android.app.Application;
 
@@ -10,7 +10,7 @@ import com.example.android.retrofittoppops.database.entity.AlbumEntity;
 import com.example.android.retrofittoppops.database.entity.ArtistEntity;
 import com.example.android.retrofittoppops.database.entity.TrackEntity;
 import com.example.android.retrofittoppops.model.Chart.ChartDataTracks;
-import com.example.android.retrofittoppops.threading.DefaultExecutorSupplier;
+import com.example.android.retrofittoppops.thread.DefaultExecutorSupplier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,15 +67,6 @@ public class TrackRepository {
             albumDao.insert(albumEntities.toArray(new AlbumEntity[0]));
             trackDao.insert(trackEntities.toArray(new TrackEntity[0]));
 
-        });
-    }
-
-    // Delete functions
-    public void deleteAll() {
-        DefaultExecutorSupplier.getInstance().forBackgroundTasks().execute(() -> {
-            trackDao.deleteAll();
-            albumDao.deleteAll();
-            artistDao.deleteAll();
         });
     }
 

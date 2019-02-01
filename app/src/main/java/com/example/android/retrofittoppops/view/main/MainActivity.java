@@ -1,17 +1,6 @@
-package com.example.android.retrofittoppops.view;
-
-import androidx.lifecycle.ViewModelProviders;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.android.retrofittoppops.view.main;
 
 import android.os.Bundle;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
-
-import android.os.Handler;
-import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,18 +8,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.retrofittoppops.R;
-import com.example.android.retrofittoppops.controller.ChartAdapter;
+import com.example.android.retrofittoppops.adapter.MainChartAdapter;
+import com.example.android.retrofittoppops.database.TracksDatabase;
 import com.example.android.retrofittoppops.database.entity.ArtistEntity;
 import com.example.android.retrofittoppops.database.entity.TrackEntity;
 import com.example.android.retrofittoppops.model.TrackArtistHelper;
-
-import com.example.android.retrofittoppops.threading.DefaultExecutorSupplier;
-import com.example.android.retrofittoppops.viewmodel.TracksViewModel;
+import com.example.android.retrofittoppops.thread.DefaultExecutorSupplier;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -47,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout pullToRefresh;
 
-    private ChartAdapter adapterMainRv;
-    private TracksViewModel tracksViewModel;
+    private MainChartAdapter adapterMainRv;
+    private MainViewModel mainViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,24 +50,29 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(myToolbar);
-        tracksViewModel = ViewModelProviders.of(this).get(TracksViewModel.class);
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvView.setLayoutManager(layoutManager);
-        adapterMainRv = new ChartAdapter();
+        adapterMainRv = new MainChartAdapter();
         rvView.setAdapter(adapterMainRv);
 
-        tracksViewModel.getChartLiveData().observe(this, chartEntity -> {
+        mainViewModel.fetchCharts();
 
+        mainViewModel.onError().observe(this, errorMessage -> {
+            Toast.makeText(this, "No internet, please try again", Toast.LENGTH_SHORT).show();
+        });
+
+        mainViewModel.getChartLiveData().observe(this, chartEntity -> {
             if (chartEntity != null) {
                 DefaultExecutorSupplier.getInstance().forBackgroundTasks().execute(() -> {
 
-                    List<TrackEntity> chartTracks = tracksViewModel.getTracksById(chartEntity.getTracks());
+                    List<TrackEntity> chartTracks = mainViewModel.getTracksById(chartEntity.getTracks());
                     List<String> artistIds = new ArrayList<>();
                     for (TrackEntity item : chartTracks) {
                         artistIds.add(item.getArtistId());
                     }
 
-                    List<ArtistEntity> chartArtists = tracksViewModel.getArtistsById(artistIds);
+                    List<ArtistEntity> chartArtists = mainViewModel.getArtistsById(artistIds);
                     List<TrackArtistHelper> finalAdapterList = new ArrayList<>();
                     for (TrackEntity track : chartTracks) {
                         TrackArtistHelper item = new TrackArtistHelper();
@@ -88,8 +86,6 @@ public class MainActivity extends AppCompatActivity {
                         finalAdapterList.add(item);
                     }
 
-                    // TODO use main thread from DefaultExecuters
-                    // check out
                     DefaultExecutorSupplier.getInstance().forMainThreadTasks().execute(() -> {
                         if (!finalAdapterList.isEmpty()) {
                             tvNoData.setVisibility(View.GONE);
@@ -105,8 +101,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         pullToRefresh.setOnRefreshListener(() -> {
-            tracksViewModel.fetchCharts();
-            Toast.makeText(getApplicationContext(), "List refreshed", Toast.LENGTH_SHORT).show();
+            mainViewModel.fetchCharts();
             pullToRefresh.setRefreshing(false);
         });
     }
@@ -136,7 +131,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
             case R.id.delete_all: {
-                tracksViewModel.deleteAll();
+                DefaultExecutorSupplier.getInstance().forBackgroundTasks().execute(() -> {
+                    TracksDatabase.clearDB(getApplicationContext());
+                });
                 rvView.setVisibility(View.GONE);
                 tvNoData.setVisibility(View.VISIBLE);
             }

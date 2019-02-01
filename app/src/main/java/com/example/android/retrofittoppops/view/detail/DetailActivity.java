@@ -1,4 +1,4 @@
-package com.example.android.retrofittoppops.view;
+package com.example.android.retrofittoppops.view.detail;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,10 +9,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.retrofittoppops.R;
-import com.example.android.retrofittoppops.controller.SongListRecyclerAdapter;
+import com.example.android.retrofittoppops.adapter.DetailTrackAdapter;
 import com.example.android.retrofittoppops.database.entity.AlbumEntity;
 import com.example.android.retrofittoppops.utils.Const;
-import com.example.android.retrofittoppops.viewmodel.DetailViewModel;
 import com.squareup.picasso.Picasso;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +31,7 @@ public class DetailActivity extends AppCompatActivity {
         activity.startActivity(intent);
     }
 
-    SongListRecyclerAdapter adapter;
+    DetailTrackAdapter adapter;
     private DetailViewModel detailViewModel;
 
     @BindView(R.id.song_list_rv)
@@ -67,26 +66,24 @@ public class DetailActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new SongListRecyclerAdapter();
+        adapter = new DetailTrackAdapter();
         recyclerView.setAdapter(adapter);
 
+        detailViewModel.onError().observe(this, errorMessage -> {
+            Toast.makeText(this, "No internet, please try again", Toast.LENGTH_SHORT).show();
+        });
+
+
         detailViewModel.getAlbumLiveData(albumId).observe(this, albumEntity -> {
-            // TODO circular dependancy
-            if (albumEntity != null) {
-                // TODO does not need to be initialize every time
-                // check code logic
+           if (albumEntity != null) {
                 displayAlbumDescription(albumEntity);
                 adapter.setData(albumEntity.getTrackList());
             }
         });
 
-        // TODO call api onCreate of Activity
-        // this will avoid circular calls
         detailViewModel.fetchAlbumFromApi(albumId);
     }
 
-    // TODO show data right away
-    // do not show null
     private void displayAlbumDescription(AlbumEntity albumEntity) {
         if (!TextUtils.isEmpty(albumEntity.getName())) {
             albumName.setText(String.format(getString(R.string.album_name_detail), albumEntity.getName()));

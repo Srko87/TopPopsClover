@@ -38,9 +38,16 @@ public abstract class TracksDatabase extends RoomDatabase {
         return instance;
     }
 
+    public static void clearDB(Context context) {
+        getDatabase(context).clearAllTables();
+    }
+
     public abstract TrackDao trackDao();
+
     public abstract AlbumDao albumDao();
+
     public abstract ArtistDao artistDao();
+
     public abstract ChartDao chartDao();
 
 }

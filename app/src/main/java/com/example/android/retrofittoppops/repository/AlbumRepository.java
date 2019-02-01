@@ -1,4 +1,4 @@
-package com.example.android.retrofittoppops.database.repository;
+package com.example.android.retrofittoppops.repository;
 
 import android.app.Application;
 
@@ -6,7 +6,7 @@ import com.example.android.retrofittoppops.database.TracksDatabase;
 import com.example.android.retrofittoppops.database.dao.AlbumDao;
 import com.example.android.retrofittoppops.database.entity.AlbumEntity;
 import com.example.android.retrofittoppops.model.Album.AlbumTracksData;
-import com.example.android.retrofittoppops.threading.DefaultExecutorSupplier;
+import com.example.android.retrofittoppops.thread.DefaultExecutorSupplier;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

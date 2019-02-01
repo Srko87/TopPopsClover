@@ -1,4 +1,4 @@
-package com.example.android.retrofittoppops.threading;
+package com.example.android.retrofittoppops.thread;
 
 import android.os.Handler;
 import android.os.Looper;
