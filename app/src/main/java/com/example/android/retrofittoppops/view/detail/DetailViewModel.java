@@ -3,12 +3,9 @@ package com.example.android.retrofittoppops.view.detail;
 import android.app.Application;
 
 import com.example.android.retrofittoppops.database.entity.AlbumEntity;
-import com.example.android.retrofittoppops.model.Album.AlbumTracksData;
 import com.example.android.retrofittoppops.network.ApiClient;
 import com.example.android.retrofittoppops.network.ApiService;
 import com.example.android.retrofittoppops.repository.AlbumRepository;
-
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -20,17 +17,16 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DetailViewModel extends AndroidViewModel {
 
+    private ApiService apiService;
     private AlbumRepository albumRepository;
+
     private CompositeDisposable disposables = new CompositeDisposable();
     private MutableLiveData<String> errorLiveData = new MutableLiveData<>();
 
     public DetailViewModel(@NonNull Application application) {
         super(application);
+        apiService = ApiClient.getClient().create(ApiService.class);
         albumRepository = new AlbumRepository(application);
-    }
-
-    private void updateAlbum(String artistName, String cover, List<AlbumTracksData> trackList, String id) {
-        albumRepository.updateAlbum(artistName, cover, trackList, id);
     }
 
     LiveData<AlbumEntity> getAlbumLiveData(String id) {
@@ -38,17 +34,16 @@ public class DetailViewModel extends AndroidViewModel {
     }
 
     void fetchAlbumFromApi(String id) {
-
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
-
         disposables.add(apiService.getAlbum(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
-                    updateAlbum(response.getAlbumArtist().getName(), response.getCover(), response.getTracks().getAlbumTracksData(), response.getId());
-                }, error -> {
-                    errorLiveData.setValue(error.getLocalizedMessage());
-                }));
+                // TODO
+                // if error occurred the response part is still run, crashing the app
+                // implement on success and on failure methods
+                .subscribe(response -> albumRepository.updateAlbum(response.getAlbumArtist().getName(), response.getCover(), response.getTracks().getAlbumTracksData(), response.getId()),
+                        error -> {
+                            errorLiveData.setValue(error.getLocalizedMessage());
+                        }));
     }
 
     LiveData<String> onError() {

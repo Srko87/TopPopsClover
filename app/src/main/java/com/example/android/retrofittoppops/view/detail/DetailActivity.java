@@ -70,12 +70,14 @@ public class DetailActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         detailViewModel.onError().observe(this, errorMessage -> {
+            // TODO
+            // only one type of error is shown here
+            // implement other error types
             Toast.makeText(this, "No internet, please try again", Toast.LENGTH_SHORT).show();
         });
 
-
         detailViewModel.getAlbumLiveData(albumId).observe(this, albumEntity -> {
-           if (albumEntity != null) {
+            if (albumEntity != null) {
                 displayAlbumDescription(albumEntity);
                 adapter.setData(albumEntity.getTrackList());
             }

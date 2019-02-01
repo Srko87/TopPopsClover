@@ -19,7 +19,6 @@ import androidx.lifecycle.LiveData;
 
 public class TrackRepository {
 
-    public static final String TAG = "track repository";
     private TrackDao trackDao;
     private AlbumDao albumDao;
     private ArtistDao artistDao;
@@ -74,7 +73,7 @@ public class TrackRepository {
         return trackDao.getLastTracksById(trackIdList);
     }
 
-    public List<TrackEntity> getTracksById(List<String> trackIds){
+    public List<TrackEntity> getTracksById(List<String> trackIds) {
         return trackDao.getTracksById(trackIds);
     }
 

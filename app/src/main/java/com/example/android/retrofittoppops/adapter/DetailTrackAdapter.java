@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-// TODO check code
 public class DetailTrackAdapter extends RecyclerView.Adapter<DetailTrackAdapter.MyViewHolder> {
 
     private List<String> data = new ArrayList<>();
