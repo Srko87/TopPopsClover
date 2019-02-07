@@ -1,6 +1,6 @@
 package com.example.android.retrofittoppops.database.utils;
 
-import com.example.android.retrofittoppops.utils.Const;
+import com.example.android.retrofittoppops.commons.utils.Const;
 
 import java.util.Date;
 

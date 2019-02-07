@@ -10,5 +10,7 @@
     <string name="song_name_main">Song name: %s</string>
     <string name="song_duration_main">Song Duration: %s</string>
     <string name="artist_name_main">Artist name: %s</string>
-
+    <string name="error_message">Something went wrong</string>
+    <string name="button_ok">Ok</string>
+    <string name="error_dialog_title">Error</string>
 </resources>

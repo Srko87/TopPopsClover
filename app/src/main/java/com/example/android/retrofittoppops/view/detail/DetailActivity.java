@@ -11,9 +11,10 @@ import android.widget.Toast;
 import com.example.android.retrofittoppops.R;
 import com.example.android.retrofittoppops.adapter.DetailTrackAdapter;
 import com.example.android.retrofittoppops.database.entity.AlbumEntity;
-import com.example.android.retrofittoppops.utils.Const;
+import com.example.android.retrofittoppops.commons.utils.Const;
 import com.squareup.picasso.Picasso;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
@@ -70,10 +71,16 @@ public class DetailActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         detailViewModel.onError().observe(this, errorMessage -> {
-            // TODO
-            // only one type of error is shown here
-            // implement other error types
-            Toast.makeText(this, "No internet, please try again", Toast.LENGTH_SHORT).show();
+
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setMessage(R.string.error_message)
+                    .setTitle(getString(R.string.error_dialog_title))
+                    .setPositiveButton(R.string.button_ok, (dialog1, id) -> {
+                        dialog1.dismiss();
+                    })
+                    .create();
+
+            dialog.show();
         });
 
         detailViewModel.getAlbumLiveData(albumId).observe(this, albumEntity -> {

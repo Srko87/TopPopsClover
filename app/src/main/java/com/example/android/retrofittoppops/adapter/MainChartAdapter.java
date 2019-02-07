@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.android.retrofittoppops.R;
 import com.example.android.retrofittoppops.model.TrackArtistHelper;
-import com.example.android.retrofittoppops.utils.Tools;
+import com.example.android.retrofittoppops.commons.utils.Tools;
 import com.example.android.retrofittoppops.view.detail.DetailActivity;
 
 import java.util.ArrayList;
