@@ -38,7 +38,7 @@ public class DetailViewModel extends BaseViewModel {
                 .subscribe(response -> {
                     if (response.getErrorResponse() == null) {
                         albumRepository.updateAlbum(response.getAlbumArtist().getName(),
-                                response.getCover(), response.getTracks().getAlbumTracksData(), response.getId());
+                                response.getCoverBig(), response.getTracks().getAlbumTracksData(), response.getId());
                     } else {
                         errorLiveData.setValue(response.getErrorResponse().getMessage());
                     }

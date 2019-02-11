@@ -5,6 +5,7 @@ public class Const {
     public static class Extras {
         public static final String TRACK_NAME = "trackName";
         public static final String ALBUM_ID = "albumId";
+        public static final String SONG_POSITION = "songPosition";
     }
 
     public static class DateConstant {

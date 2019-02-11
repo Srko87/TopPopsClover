@@ -29,7 +29,7 @@ public class AlbumRepository {
 
             AlbumEntity albumEntity = new AlbumEntity();
             albumEntity.setArtistName(artistName);
-            albumEntity.setCover(cover);
+            albumEntity.setCoverBig(cover);
 
             List<String> trackTitleList = new ArrayList<>();
 

@@ -10,7 +10,6 @@ import android.widget.Toast;
 import com.example.android.retrofittoppops.R;
 import com.example.android.retrofittoppops.adapter.MainChartAdapter;
 import com.example.android.retrofittoppops.commons.thread.DefaultExecutorSupplier;
-import com.example.android.retrofittoppops.database.TracksDatabase;
 import com.example.android.retrofittoppops.database.entity.ArtistEntity;
 import com.example.android.retrofittoppops.database.entity.TrackEntity;
 import com.example.android.retrofittoppops.model.TrackArtistHelper;
@@ -20,6 +19,7 @@ import java.util.List;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.rv_main_activity)
     RecyclerView rvView;
-
     @BindView(R.id.toolbar)
     Toolbar myToolbar;
     @BindView(R.id.tv_no_data)
@@ -51,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(myToolbar);
+        getSupportActionBar().setTitle(null);
+
+
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvView.setLayoutManager(layoutManager);
@@ -118,6 +120,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        if(menu instanceof MenuBuilder) {
+            MenuBuilder menuBuilder = (MenuBuilder) menu;
+            menuBuilder.setOptionalIconsVisible(true);
+        }
         return true;
     }
 
@@ -138,15 +144,6 @@ public class MainActivity extends AppCompatActivity {
                 adapterMainRv.sortByDurationDesc();
                 Toast.makeText(getApplicationContext(), "Sorted descending by track duration!", Toast.LENGTH_SHORT).show();
                 break;
-            }
-            case R.id.delete_all: {
-                // TODO
-                // this needs to be in ViewModel and DatabaseRepository
-                DefaultExecutorSupplier.getInstance().forBackgroundTasks().execute(() -> {
-                    TracksDatabase.clearDB(getApplicationContext());
-                });
-                rvView.setVisibility(View.GONE);
-                tvNoData.setVisibility(View.VISIBLE);
             }
         }
         return super.onOptionsItemSelected(item);

@@ -73,8 +73,6 @@ public class MainViewModel extends BaseViewModel {
         return trackRepository.getArtistsById(artistIds);
     }
 
-
-
     @Override
     protected void onCleared() {
         super.onCleared();

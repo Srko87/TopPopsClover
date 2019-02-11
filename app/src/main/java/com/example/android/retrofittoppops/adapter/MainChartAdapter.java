@@ -2,16 +2,17 @@ package com.example.android.retrofittoppops.adapter;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.retrofittoppops.R;
-import com.example.android.retrofittoppops.model.TrackArtistHelper;
 import com.example.android.retrofittoppops.commons.utils.Tools;
+import com.example.android.retrofittoppops.model.TrackArtistHelper;
 import com.example.android.retrofittoppops.view.detail.DetailActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -77,6 +78,8 @@ public class MainChartAdapter extends RecyclerView.Adapter<MainChartAdapter.Myvi
         TextView songDurationTv;
         @BindView(R.id.artist_name_tv)
         TextView artistNameTv;
+        @BindView(R.id.artist_picture_iv)
+        ImageView artistPictureTv;
 
         MyviewHolder(View itemView) {
             super(itemView);
@@ -85,24 +88,25 @@ public class MainChartAdapter extends RecyclerView.Adapter<MainChartAdapter.Myvi
 
         void bindView(final int position) {
             TrackArtistHelper item = data.get(position);
-            
-            Context context = songPositionTv.getContext();
-            String songPositionText = context.getString(R.string.song_position_main, item.track.getPosition());
+
+            Picasso.get().load(item.artist.getPicture()).into(artistPictureTv);
+
+            String songPositionText = Integer.toString(item.track.getPosition());
             songPositionTv.setText(songPositionText);
             
-            String songNameText = context.getString(R.string.song_name_detail, item.track.getTitle());
+            String songNameText = item.track.getTitle();
             songNameTv.setText(songNameText);
             
-            String songDurationText = context.getString(R.string.song_duration_main, Tools.secondsToString(item.track.getDuration()));
+            String songDurationText = Tools.secondsToString(item.track.getDuration());
             songDurationTv.setText(songDurationText);
             
             if (item.artist != null) {
 
-                String artistNameText = context.getString(R.string.artist_name_main, item.artist.getName());
+                String artistNameText = item.artist.getName();
                 artistNameTv.setText(artistNameText);
             }
 
-            itemView.setOnClickListener(view -> DetailActivity.StartActivity((Activity) view.getContext(), item.track.getTitle(), item.track.getAlbumId()));
+            itemView.setOnClickListener(view -> DetailActivity.StartActivity((Activity) view.getContext(), item.track.getTitle(), item.track.getAlbumId(), item.track.getPosition()));
         }
     }
 
