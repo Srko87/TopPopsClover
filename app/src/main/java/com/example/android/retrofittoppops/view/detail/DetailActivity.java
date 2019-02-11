@@ -6,12 +6,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.retrofittoppops.R;
 import com.example.android.retrofittoppops.adapter.DetailTrackAdapter;
-import com.example.android.retrofittoppops.database.entity.AlbumEntity;
 import com.example.android.retrofittoppops.commons.utils.Const;
+import com.example.android.retrofittoppops.database.entity.AlbumEntity;
 import com.squareup.picasso.Picasso;
 
 import androidx.appcompat.app.AlertDialog;
@@ -23,8 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-// TODO
-// Scroll view is scrolled to bottom when activity is created, should be at the begging.
 public class DetailActivity extends AppCompatActivity {
 
     public static void StartActivity(Activity activity, String trackName, String albumId, Integer songPosition) {
@@ -62,7 +59,6 @@ public class DetailActivity extends AppCompatActivity {
 
         initializeToolbar(detailToolbar);
         getSupportActionBar().setTitle(null);
-
         Intent intent = getIntent();
 
         String albumId = intent.getStringExtra(Const.Extras.ALBUM_ID);
@@ -81,10 +77,9 @@ public class DetailActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         detailViewModel.onError().observe(this, errorMessage -> {
-            // TODO
-            // Why are you no using errorMessage?
-            AlertDialog dialog = new AlertDialog.Builder(this)
-                    .setMessage(R.string.error_message)
+
+            AlertDialog dialog = new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog)
+                    .setMessage(errorMessage)
                     .setTitle(getString(R.string.error_dialog_title))
                     .setPositiveButton(R.string.button_ok, (dialog1, id) -> dialog1.dismiss())
                     .create();
@@ -122,9 +117,13 @@ public class DetailActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         } else {
-            // TODO
-            // Use AlertDialog in all error cases.
-            Toast.makeText(this, "getSupportActionbar is null", Toast.LENGTH_SHORT).show();
+            AlertDialog dialog = new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog)
+                    .setMessage(R.string.actionbar_null)
+                    .setTitle(getString(R.string.error_dialog_title))
+                    .setPositiveButton(R.string.button_ok, (dialog1, id) -> dialog1.dismiss())
+                    .create();
+
+            dialog.show();
         }
     }
 

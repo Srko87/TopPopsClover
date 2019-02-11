@@ -62,10 +62,8 @@ public class MainActivity extends AppCompatActivity {
         mainViewModel.fetchCharts();
 
         mainViewModel.onError().observe(this, errorMessage -> {
-            // TODO
-            // Why not use errorMessage?
-            AlertDialog dialog = new AlertDialog.Builder(this)
-                    .setMessage(R.string.error_message)
+            AlertDialog dialog = new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog)
+                    .setMessage(errorMessage)
                     .setTitle(getString(R.string.error_dialog_title))
                     .setPositiveButton(R.string.button_ok, (dialog1, id) -> {
                         dialog1.dismiss();
