@@ -11,9 +11,10 @@ import android.widget.Toast;
 import com.example.android.retrofittoppops.R;
 import com.example.android.retrofittoppops.adapter.DetailTrackAdapter;
 import com.example.android.retrofittoppops.database.entity.AlbumEntity;
-import com.example.android.retrofittoppops.utils.Const;
+import com.example.android.retrofittoppops.commons.utils.Const;
 import com.squareup.picasso.Picasso;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
@@ -24,18 +25,21 @@ import butterknife.ButterKnife;
 
 public class DetailActivity extends AppCompatActivity {
 
-    public static void StartActivity(Activity activity, String trackName, String albumId) {
+    public static void StartActivity(Activity activity, String trackName, String albumId, Integer songPosition) {
         Intent intent = new Intent(activity, DetailActivity.class);
         intent.putExtra(Const.Extras.TRACK_NAME, trackName);
         intent.putExtra(Const.Extras.ALBUM_ID, albumId);
+        intent.putExtra(Const.Extras.SONG_POSITION, songPosition);
         activity.startActivity(intent);
     }
 
     DetailTrackAdapter adapter;
-    private DetailViewModel detailViewModel;
+    protected DetailViewModel detailViewModel;
 
     @BindView(R.id.song_list_rv)
     RecyclerView recyclerView;
+    @BindView(R.id.tv_detail_song_position)
+    TextView songRank;
     @BindView(R.id.tv_detail_song_name)
     TextView songName;
     @BindView(R.id.tv_detail_album_name)
@@ -47,6 +51,7 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.detail_toolbar)
     Toolbar detailToolbar;
     String trackName;
+    Integer songPosition;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,12 +59,16 @@ public class DetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         initializeToolbar(detailToolbar);
+        getSupportActionBar().setTitle(null);
 
         Intent intent = getIntent();
 
         String albumId = intent.getStringExtra(Const.Extras.ALBUM_ID);
         trackName = intent.getStringExtra(Const.Extras.TRACK_NAME);
-        songName.setText(String.format(getString(R.string.song_name_detail), trackName));
+        songName.setText(trackName);
+        songPosition = intent.getIntExtra(Const.Extras.SONG_POSITION, 0);
+        songRank.setText(String.format(getString(R.string.detail_rank), String.valueOf(Integer.toString(songPosition))));
+
 
         detailViewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
 
@@ -70,10 +79,16 @@ public class DetailActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         detailViewModel.onError().observe(this, errorMessage -> {
-            // TODO
-            // only one type of error is shown here
-            // implement other error types
-            Toast.makeText(this, "No internet, please try again", Toast.LENGTH_SHORT).show();
+
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setMessage(R.string.error_message)
+                    .setTitle(getString(R.string.error_dialog_title))
+                    .setPositiveButton(R.string.button_ok, (dialog1, id) -> {
+                        dialog1.dismiss();
+                    })
+                    .create();
+
+            dialog.show();
         });
 
         detailViewModel.getAlbumLiveData(albumId).observe(this, albumEntity -> {
@@ -87,13 +102,17 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void displayAlbumDescription(AlbumEntity albumEntity) {
+
         if (!TextUtils.isEmpty(albumEntity.getName())) {
-            albumName.setText(String.format(getString(R.string.album_name_detail), albumEntity.getName()));
+            albumName.setText(albumEntity.getName());
         }
         if (!TextUtils.isEmpty(albumEntity.getArtistName())) {
-            artistName.setText(String.format(getString(R.string.artist_name_detail), albumEntity.getArtistName()));
+            artistName.setText(albumEntity.getArtistName());
         }
-        Picasso.get().load(albumEntity.getCover()).into(albumCover);
+        Picasso.get()
+                .load(albumEntity.getCoverBig())
+                .placeholder(R.drawable.placeholder)
+                .into(albumCover);
     }
 
     private void initializeToolbar(Toolbar detailToolbar) {

@@ -1,4 +1,4 @@
-package com.example.android.retrofittoppops.utils;
+package com.example.android.retrofittoppops.commons.utils;
 
 import java.util.Locale;
 

@@ -10,7 +10,7 @@ import com.example.android.retrofittoppops.database.entity.AlbumEntity;
 import com.example.android.retrofittoppops.database.entity.ArtistEntity;
 import com.example.android.retrofittoppops.database.entity.TrackEntity;
 import com.example.android.retrofittoppops.model.Chart.ChartDataTracks;
-import com.example.android.retrofittoppops.thread.DefaultExecutorSupplier;
+import com.example.android.retrofittoppops.commons.thread.DefaultExecutorSupplier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,9 @@ public class TrackRepository {
                 ArtistEntity artistEntity = new ArtistEntity();
                 artistEntity.setId(cDTracks.getChartArtistTracks().getId());
                 artistEntity.setName(cDTracks.getChartArtistTracks().getName());
+                artistEntity.setPicture(cDTracks.getChartArtistTracks().getPicture());
                 artistEntities.add(artistEntity);
+
 
                 AlbumEntity albumEntity = new AlbumEntity();
                 albumEntity.setId(cDTracks.getChartAlbumTracks().getId());

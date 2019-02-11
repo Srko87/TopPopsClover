@@ -1,12 +1,14 @@
 package com.example.android.retrofittoppops.model.Album;
 
+import com.example.android.retrofittoppops.commons.baseClasses.BaseResponse;
+import com.example.android.retrofittoppops.model.ErrorResponse;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class AlbumAlbum implements Serializable {
+public class AlbumAlbum extends BaseResponse implements Serializable {
 
     @SerializedName("id")
     private String id;
@@ -61,7 +63,8 @@ public class AlbumAlbum implements Serializable {
     @SerializedName("tracks")
     private AlbumTracksAlbum tracks;
 
-    public AlbumAlbum(String id, String title, String upc, String link, String share, String cover, String coverSmall, String coverMedium, String coverBig, String coverXl, Integer genreId, AlbumGenres albumGenres, String label, Integer nbTracks, Integer duration, Integer fans, Integer rating, String releaseDate, String recordType, Boolean available, String tracklist, Boolean explicitLyrics, AlbumArtist albumArtist, String type, AlbumTracksAlbum tracks) {
+    public AlbumAlbum(ErrorResponse errorResponse,String id, String title, String upc, String link, String share, String cover, String coverSmall, String coverMedium, String coverBig, String coverXl, Integer genreId, AlbumGenres albumGenres, String label, Integer nbTracks, Integer duration, Integer fans, Integer rating, String releaseDate, String recordType, Boolean available, String tracklist, Boolean explicitLyrics, AlbumArtist albumArtist, String type, AlbumTracksAlbum tracks) {
+        super(errorResponse);
         this.id = id;
         this.title = title;
         this.upc = upc;

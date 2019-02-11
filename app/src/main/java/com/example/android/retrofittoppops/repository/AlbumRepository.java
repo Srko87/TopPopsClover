@@ -6,7 +6,7 @@ import com.example.android.retrofittoppops.database.TracksDatabase;
 import com.example.android.retrofittoppops.database.dao.AlbumDao;
 import com.example.android.retrofittoppops.database.entity.AlbumEntity;
 import com.example.android.retrofittoppops.model.Album.AlbumTracksData;
-import com.example.android.retrofittoppops.thread.DefaultExecutorSupplier;
+import com.example.android.retrofittoppops.commons.thread.DefaultExecutorSupplier;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class AlbumRepository {
 
             AlbumEntity albumEntity = new AlbumEntity();
             albumEntity.setArtistName(artistName);
-            albumEntity.setCover(cover);
+            albumEntity.setCoverBig(cover);
 
             List<String> trackTitleList = new ArrayList<>();
 

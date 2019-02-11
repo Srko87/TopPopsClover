@@ -24,7 +24,7 @@ public class AlbumEntity {
 
     private String artistName;
 
-    private String cover;
+    private String coverBig;
 
     private List<String> trackList;
 
@@ -61,12 +61,12 @@ public class AlbumEntity {
         this.artistName = artistName;
     }
 
-    public String getCover() {
-        return cover;
+    public String getCoverBig() {
+        return coverBig;
     }
 
-    public void setCover(String cover) {
-        this.cover = cover;
+    public void setCoverBig(String coverBig) {
+        this.coverBig = coverBig;
     }
 
     public List<String> getTrackList() {

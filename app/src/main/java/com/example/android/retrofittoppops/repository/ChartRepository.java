@@ -7,7 +7,7 @@ import com.example.android.retrofittoppops.database.dao.ChartDao;
 import com.example.android.retrofittoppops.database.entity.ChartEntity;
 import com.example.android.retrofittoppops.database.utils.DateCompare;
 import com.example.android.retrofittoppops.model.Chart.ChartDataTracks;
-import com.example.android.retrofittoppops.thread.DefaultExecutorSupplier;
+import com.example.android.retrofittoppops.commons.thread.DefaultExecutorSupplier;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

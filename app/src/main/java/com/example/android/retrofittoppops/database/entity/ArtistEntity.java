@@ -12,6 +12,7 @@ public class ArtistEntity {
     @PrimaryKey
     private String id;
     private String name;
+    private String picture;
     @NonNull
     public String getId() {
         return id;
@@ -27,5 +28,13 @@ public class ArtistEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 }
