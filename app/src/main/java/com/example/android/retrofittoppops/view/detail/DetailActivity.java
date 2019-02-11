@@ -23,6 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+// TODO
+// Scroll view is scrolled to bottom when activity is created, should be at the begging.
 public class DetailActivity extends AppCompatActivity {
 
     public static void StartActivity(Activity activity, String trackName, String albumId, Integer songPosition) {
