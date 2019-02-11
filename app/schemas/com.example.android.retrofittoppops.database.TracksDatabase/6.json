@@ -2,16 +2,16 @@
   "formatVersion": 1,
   "database": {
     "version": 6,
-    "identityHash": "5e9966d7733b759cdc1858df304d2655",
+    "identityHash": "c8918f9afcb67c70b2e13a2b0ff1b148",
     "entities": [
       {
         "tableName": "album_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, `artistId` INTEGER, PRIMARY KEY(`id`), FOREIGN KEY(`artistId`) REFERENCES `artist_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, `artistId` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`artistId`) REFERENCES `artist_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -23,7 +23,7 @@
           {
             "fieldPath": "artistId",
             "columnName": "artistId",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": false
           }
         ],
@@ -59,12 +59,12 @@
       },
       {
         "tableName": "artist_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -85,7 +85,7 @@
       },
       {
         "tableName": "chart_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `createdAt` INTEGER, `modifiedAt` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `createdAt` INTEGER, `modifiedAt` INTEGER, `tracks` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -104,6 +104,12 @@
             "columnName": "modifiedAt",
             "affinity": "INTEGER",
             "notNull": false
+          },
+          {
+            "fieldPath": "tracks",
+            "columnName": "tracks",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -117,12 +123,18 @@
       },
       {
         "tableName": "tracks_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `title` TEXT, `duration` INTEGER, `position` INTEGER, `artistId` INTEGER, `albumId` INTEGER, PRIMARY KEY(`id`), FOREIGN KEY(`artistId`) REFERENCES `artist_table`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`albumId`) REFERENCES `album_table`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT, `position` INTEGER NOT NULL, `title` TEXT, `duration` INTEGER, `artistId` TEXT, `albumId` TEXT, PRIMARY KEY(`position`), FOREIGN KEY(`artistId`) REFERENCES `artist_table`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`albumId`) REFERENCES `album_table`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "position",
+            "columnName": "position",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -138,27 +150,21 @@
             "notNull": false
           },
           {
-            "fieldPath": "position",
-            "columnName": "position",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
             "fieldPath": "artistId",
             "columnName": "artistId",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "albumId",
             "columnName": "albumId",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": false
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "position"
           ],
           "autoGenerate": false
         },
@@ -209,7 +215,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"5e9966d7733b759cdc1858df304d2655\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c8918f9afcb67c70b2e13a2b0ff1b148\")"
     ]
   }
 }

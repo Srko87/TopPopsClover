@@ -7,14 +7,17 @@
 
     <item
         android:id="@+id/sort_normal"
-        android:title="normal"
+        android:icon="@drawable/position_icon"
+        android:title="@string/position_overflow_item"
         app:showAsAction="never" />
     <item
         android:id="@+id/sort_ascending"
-        android:title="sort asc"
+        android:icon="@drawable/ascending_icon"
+        android:title="@string/ascending_overflow_item"
         app:showAsAction="never" />
     <item
         android:id="@+id/sort_descending"
-        android:title="sort desc"
+        android:icon="@drawable/descending_icon"
+        android:title="@string/descending_overflow_item"
         app:showAsAction="never" />
 </menu>

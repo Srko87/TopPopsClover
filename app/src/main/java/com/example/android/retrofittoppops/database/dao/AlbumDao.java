@@ -2,26 +2,25 @@ package com.example.android.retrofittoppops.database.dao;
 
 import com.example.android.retrofittoppops.database.entity.AlbumEntity;
 
-import java.util.List;
-
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Transaction;
 
 @Dao
 public interface AlbumDao {
 
-    @Transaction
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(AlbumEntity... albumEntities);
-
-    @Query("SELECT * FROM album_table")
-    LiveData<List<AlbumEntity>> getAllAlbums();
 
     @Query("DELETE FROM album_table")
     void deleteAll();
+
+    @Query("SELECT * FROM album_table WHERE id = :id")
+    LiveData<AlbumEntity> getAlbum(String id);
+
+    @Query("UPDATE album_table SET artistName = :artistName, coverBig = :cover, trackList = :trackList WHERE id = :id ")
+    void updateAlbum(String artistName, String cover, String trackList, String id);
 
 }

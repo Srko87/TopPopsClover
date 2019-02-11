@@ -18,7 +18,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {AlbumEntity.class, ArtistEntity.class, ChartEntity.class, TrackEntity.class}, version = 6)
+@Database(entities = {AlbumEntity.class, ArtistEntity.class, ChartEntity.class, TrackEntity.class}, version = 12)
 @TypeConverters({DateConverter.class, TrackConverter.class})
 public abstract class TracksDatabase extends RoomDatabase {
 
@@ -32,17 +32,18 @@ public abstract class TracksDatabase extends RoomDatabase {
                     instance = Room.databaseBuilder(context.getApplicationContext(), TracksDatabase.class, DB_NAME)
                             .fallbackToDestructiveMigration()
                             .build();
-
                 }
             }
         }
         return instance;
     }
 
-
     public abstract TrackDao trackDao();
+
     public abstract AlbumDao albumDao();
+
     public abstract ArtistDao artistDao();
+
     public abstract ChartDao chartDao();
 
 }

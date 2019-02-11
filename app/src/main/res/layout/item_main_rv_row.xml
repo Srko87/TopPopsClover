@@ -1,57 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/layout_margin"
-    android:background="@android:color/white"
+    android:layout_height="72dp"
+    android:layout_margin="4dp"
     app:cardCornerRadius="@dimen/cv_corner_radius"
-    app:cardElevation="@dimen/card_elevation">
+    app:cardElevation="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@android:color/white">
 
         <TextView
             android:id="@+id/song_position_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/cardview_margin"
-            android:textColor="@android:color/black"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="50dp"
+            android:layout_height="0dp"
+            android:fontFamily="@font/fredoka_one"
+            android:gravity="center"
+            android:textColor="@color/sexyRed"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1" />
+
+        <ImageView
+            android:id="@+id/artist_picture_iv"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/song_position_tv"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@drawable/ic_launcher_background" />
 
         <TextView
             android:id="@+id/song_name_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/cardview_margin"
-            android:textColor="@android:color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/song_position_tv" />
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-medium"
+            android:lines="1"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/artist_picture_iv"
+            app:layout_constraintEnd_toStartOf="@id/song_length_tv"
+            app:layout_constraintStart_toEndOf="@id/artist_picture_iv"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Oče kurac" />
 
         <TextView
             android:id="@+id/artist_name_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/cardview_margin"
-            android:textColor="@android:color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/song_name_tv" />
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="8dp"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"
+            android:lines="1"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/song_length_tv"
+            app:layout_constraintStart_toEndOf="@+id/artist_picture_iv"
+            app:layout_constraintTop_toBottomOf="@+id/song_name_tv"
+            tools:text="Kuku$ Klan" />
 
         <TextView
             android:id="@+id/song_length_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/cardview_margin"
-            android:textColor="@android:color/black"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="sans-serif"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/artist_name_tv" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="3:55" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

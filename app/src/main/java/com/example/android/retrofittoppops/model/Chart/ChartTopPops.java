@@ -1,10 +1,19 @@
 package com.example.android.retrofittoppops.model.Chart;
 
+import com.example.android.retrofittoppops.commons.baseClasses.BaseResponse;
+import com.example.android.retrofittoppops.model.ErrorResponse;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class ChartTopPops implements Serializable {
+public class ChartTopPops extends BaseResponse implements Serializable  {
+    public ChartTopPops(ErrorResponse errorResponse, ChartTracks chartTracks, ChartAlbums chartAlbums, ChartArtists chartArtists, ChartPlaylists chartPlaylists) {
+        super(errorResponse);
+        this.chartTracks = chartTracks;
+        this.chartAlbums = chartAlbums;
+        this.chartArtists = chartArtists;
+        this.chartPlaylists = chartPlaylists;
+    }
 
     @SerializedName("tracks")
     private ChartTracks chartTracks;

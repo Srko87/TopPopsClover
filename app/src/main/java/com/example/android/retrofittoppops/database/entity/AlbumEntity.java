@@ -1,5 +1,7 @@
 package com.example.android.retrofittoppops.database.entity;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -8,23 +10,30 @@ import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "album_table", foreignKeys =  @ForeignKey(entity = ArtistEntity.class, parentColumns = "id",
+@Entity(tableName = "album_table", foreignKeys = @ForeignKey(entity = ArtistEntity.class, parentColumns = "id",
         childColumns = "artistId", onDelete = CASCADE), indices = {@Index("artistId")})
 public class AlbumEntity {
 
     @NonNull
     @PrimaryKey
-    private Integer id;
+    private String id;
 
     private String name;
-    private Integer artistId;
+
+    private String artistId;
+
+    private String artistName;
+
+    private String coverBig;
+
+    private List<String> trackList;
 
     @NonNull
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(@NonNull Integer id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
@@ -36,11 +45,35 @@ public class AlbumEntity {
         this.name = name;
     }
 
-    public Integer getArtistId() {
+    public String getArtistId() {
         return artistId;
     }
 
-    public void setArtistId(Integer artistId) {
+    public void setArtistId(String artistId) {
         this.artistId = artistId;
+    }
+
+    public String getArtistName() {
+        return artistName;
+    }
+
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
+
+    public String getCoverBig() {
+        return coverBig;
+    }
+
+    public void setCoverBig(String coverBig) {
+        this.coverBig = coverBig;
+    }
+
+    public List<String> getTrackList() {
+        return trackList;
+    }
+
+    public void setTrackList(List<String> trackList) {
+        this.trackList = trackList;
     }
 }

@@ -14,7 +14,8 @@ public class TrackConverter {
 
     @TypeConverter
     public static List<String> stringToList(String data) {
-        Type dataType = new TypeToken<List<String>>() {}.getType();
+        Type dataType = new TypeToken<List<String>>() {
+        }.getType();
         return gson.fromJson(data, dataType);
     }
 
