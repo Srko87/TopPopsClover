@@ -36,15 +36,14 @@ public class DetailViewModel extends BaseViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
-                    if (response.getErrorResponse() == null) {
-                        albumRepository.updateAlbum(response.getAlbumArtist().getName(),
-                                response.getCoverBig(), response.getTracks().getAlbumTracksData(), response.getId());
-                    } else {
-                        errorLiveData.setValue(response.getErrorResponse().getMessage());
-                    }
-                },
+                            if (response.getErrorResponse() == null) {
+                                albumRepository.updateAlbum(response.getAlbumArtist().getName(),
+                                        response.getCoverBig(), response.getTracks().getAlbumTracksData(), response.getId());
+                            } else {
+                                errorLiveData.setValue(response.getErrorResponse().getMessage());
+                            }
+                        },
                         throwable -> errorLiveData.setValue(throwable.getLocalizedMessage())
-
                 ));
     }
 }

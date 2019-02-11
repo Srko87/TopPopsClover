@@ -56,7 +56,8 @@ public class MainViewModel extends BaseViewModel {
                         chartRepository.insertOrUpdateChart(new Date(), response.getChartTracks().getChartDataTracksList());
                     } else {
                         errorLiveData.setValue(response.getErrorResponse().getMessage());
-                    }}, error -> {
+                    }
+                }, error -> {
                     errorLiveData.setValue(error.getLocalizedMessage());
                 }));
     }

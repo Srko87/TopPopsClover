@@ -93,13 +93,13 @@ public class MainChartAdapter extends RecyclerView.Adapter<MainChartAdapter.Myvi
 
             String songPositionText = Integer.toString(item.track.getPosition());
             songPositionTv.setText(songPositionText);
-            
+
             String songNameText = item.track.getTitle();
             songNameTv.setText(songNameText);
-            
+
             String songDurationText = Tools.secondsToString(item.track.getDuration());
             songDurationTv.setText(songDurationText);
-            
+
             if (item.artist != null) {
 
                 String artistNameText = item.artist.getName();

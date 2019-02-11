@@ -62,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
         mainViewModel.fetchCharts();
 
         mainViewModel.onError().observe(this, errorMessage -> {
-
+            // TODO
+            // Why not use errorMessage?
             AlertDialog dialog = new AlertDialog.Builder(this)
                     .setMessage(R.string.error_message)
                     .setTitle(getString(R.string.error_dialog_title))
@@ -120,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        if(menu instanceof MenuBuilder) {
+        if (menu instanceof MenuBuilder) {
             MenuBuilder menuBuilder = (MenuBuilder) menu;
             menuBuilder.setOptionalIconsVisible(true);
         }

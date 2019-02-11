@@ -15,5 +15,4 @@ public interface ApiService {
 
     @GET("album/{album_id}")
     Single<AlbumAlbum> getAlbum(@Path("album_id") String album_id);
-
 }

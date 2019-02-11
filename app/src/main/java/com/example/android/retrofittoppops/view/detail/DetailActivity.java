@@ -79,13 +79,12 @@ public class DetailActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         detailViewModel.onError().observe(this, errorMessage -> {
-
+            // TODO
+            // Why are you no using errorMessage?
             AlertDialog dialog = new AlertDialog.Builder(this)
                     .setMessage(R.string.error_message)
                     .setTitle(getString(R.string.error_dialog_title))
-                    .setPositiveButton(R.string.button_ok, (dialog1, id) -> {
-                        dialog1.dismiss();
-                    })
+                    .setPositiveButton(R.string.button_ok, (dialog1, id) -> dialog1.dismiss())
                     .create();
 
             dialog.show();
@@ -121,6 +120,8 @@ public class DetailActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         } else {
+            // TODO
+            // Use AlertDialog in all error cases.
             Toast.makeText(this, "getSupportActionbar is null", Toast.LENGTH_SHORT).show();
         }
     }
